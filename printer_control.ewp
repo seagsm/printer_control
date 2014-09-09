@@ -87,7 +87,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.5.54273</state>
+          <state>6.40.3.54103</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -2058,6 +2058,12 @@
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_r_buff.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\board\board_spi.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\board\board_spi.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_state.c</name>
