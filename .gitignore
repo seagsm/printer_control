@@ -6,3 +6,6 @@ Debug
 /settings/stabilisation_system.cspy.bat
 /settings/stabilisation_system.dbgdt
 /settings/stabilisation_system.dni
+/settings/printer_control.cspy.bat
+/settings/printer_control.wsdt
+/printer_control.dep
