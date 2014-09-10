@@ -19,14 +19,14 @@
 #define BOARD_SPI_A_MOSI_PORT   GPIOA
 
 /* SPI_B pin definition. */
-#define BOARD_SPI_A_SCK_PIN     GPIO_Pin_5
-#define BOARD_SPI_A_SCK_PORT    GPIOA
+#define BOARD_SPI_B_SCK_PIN     GPIO_Pin_13
+#define BOARD_SPI_B_SCK_PORT    GPIOB
 
-#define BOARD_SPI_A_MISO_PIN    GPIO_Pin_6
-#define BOARD_SPI_A_MISO_PORT   GPIOA
+#define BOARD_SPI_B_MISO_PIN    GPIO_Pin_14
+#define BOARD_SPI_B_MISO_PORT   GPIOB
 
-#define BOARD_SPI_A_MOSI_PIN    GPIO_Pin_7
-#define BOARD_SPI_A_MOSI_PORT   GPIOA
+#define BOARD_SPI_B_MOSI_PIN    GPIO_Pin_15
+#define BOARD_SPI_B_MOSI_PORT   GPIOB
 
 
 
