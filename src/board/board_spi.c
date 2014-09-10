@@ -70,6 +70,8 @@ static BOARD_ERROR be_board_spi_b_gpio_init(void)
     be_result |= be_board_pin_init( GPIOB,      GPIO_Pin_14,     GPIO_Speed_10MHz,   GPIO_Mode_AF_PP);          /* MISO_PIN */
     be_result |= be_board_pin_init( GPIOB,      GPIO_Pin_13,     GPIO_Speed_10MHz,   GPIO_Mode_IN_FLOATING);    /* SCK_PIN */
 
+      
+    
     return(be_result);
 }
 
