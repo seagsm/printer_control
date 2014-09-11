@@ -17,11 +17,13 @@
 #include "board_acc.h"
 #include "board_mag.h"
 #include "board_baro.h"
+#include "board_spi.h"
 #include "api_i2c_acquisition.h"
 #include "api_main_loop.h"
 
-#define BOARD_INIT_TOTAL_STEPS 12U
 
+/* #define BOARD_INIT_TOTAL_STEPS 12U */
+#define BOARD_INIT_TOTAL_STEPS 3U
 BOARD_ERROR be_board_init_main_init(void);
 
 

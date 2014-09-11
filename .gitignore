@@ -9,3 +9,5 @@ Debug
 /settings/printer_control.cspy.bat
 /settings/printer_control.wsdt
 /printer_control.dep
+/settings/printer_control.dbgdt
+/settings/printer_control.dni

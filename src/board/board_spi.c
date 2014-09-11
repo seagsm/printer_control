@@ -59,8 +59,10 @@ static BOARD_ERROR be_board_spi_a_module_init(void)
     NVIC_InitStructure.NVIC_IRQChannelSubPriority   = SPI1_IRQn_SUB_PRIORITY_GROUP;
     NVIC_InitStructure.NVIC_IRQChannelCmd           = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
-
+    
+    SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_TXE);
     SPI_I2S_ITConfig(SPI1, SPI_I2S_IT_TXE, ENABLE);
+
 
     /* Turn On SPI A */
     SPI_Cmd(SPI1, ENABLE);
@@ -108,6 +110,7 @@ static BOARD_ERROR be_board_spi_b_module_init(void)
     NVIC_Init(&NVIC_InitStructure);
 
     /* Init RX interrupt. */
+    SPI_I2S_ClearITPendingBit(SPI2, SPI_I2S_IT_RXNE);
     SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_RXNE, ENABLE);
 
     /* Turn On SPI B */
@@ -134,28 +137,35 @@ SPI_I2S_IT_ERR	Error interrupt mask
     if(SPI_I2S_GetITStatus(SPI1, SPI_I2S_IT_TXE)== SET )
     {
         /* To do something. */
+        SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_TXE);
+        SPI_I2S_ITConfig(SPI1, SPI_I2S_IT_TXE, DISABLE);
     }
 
     if(SPI_I2S_GetITStatus(SPI1, SPI_I2S_IT_RXNE)== SET )
     {
         /* To do something. */
+        SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
     }
-
 }
 
 void   SPI2_IRQHandler(void)
 {
-
+    uint16_t u16_temp = 0U;
     if(SPI_I2S_GetITStatus(SPI2, SPI_I2S_IT_TXE)== SET )
     {
         /* To do something. */
+        SPI_I2S_ClearITPendingBit(SPI2, SPI_I2S_IT_TXE);
+        SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_TXE, DISABLE);
+
     }
 
     if(SPI_I2S_GetITStatus(SPI2, SPI_I2S_IT_RXNE)== SET )
     {
         /* To do something. */
+        u16_temp = SPI_I2S_ReceiveData(SPI1);
+        SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
+        SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_RXNE, DISABLE);
     }
-
 }
 
 
