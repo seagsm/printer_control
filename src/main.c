@@ -58,9 +58,12 @@ int main( void)
                     v_board_state_update_current_state(BOARD_SYSTEM_RUN);
                 }
 
-                SPI_I2S_SendData(SPI1, (uint16_t)0x5555U);
+                { static uint16_t u16_value = 0U;
+                    SPI_I2S_SendData(SPI1, (uint16_t)u16_value);
+                    u16_value++;
+                }
                 SPI_I2S_ITConfig(SPI1, SPI_I2S_IT_TXE, ENABLE);
-                
+
                 gv_board_sys_tick_delay(100U);
                 /* timer2_PWM_duty_CH1(bc_channel_value_structure.u16_channel_1_value); *//* send data to servo. */
 

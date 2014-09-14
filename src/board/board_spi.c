@@ -47,7 +47,7 @@ static BOARD_ERROR be_board_spi_a_module_init(void)
     SPI_InitStructure.SPI_CPOL          = SPI_CPOL_High;
     SPI_InitStructure.SPI_CPHA          = SPI_CPHA_2Edge;
     SPI_InitStructure.SPI_NSS           = SPI_NSS_Soft;
-    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_64;
     SPI_InitStructure.SPI_FirstBit      = SPI_FirstBit_MSB;
     SPI_InitStructure.SPI_CRCPolynomial = 7U;
 
@@ -59,7 +59,7 @@ static BOARD_ERROR be_board_spi_a_module_init(void)
     NVIC_InitStructure.NVIC_IRQChannelSubPriority   = SPI1_IRQn_SUB_PRIORITY_GROUP;
     NVIC_InitStructure.NVIC_IRQChannelCmd           = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
-    
+
     SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_TXE);
     SPI_I2S_ITConfig(SPI1, SPI_I2S_IT_TXE, ENABLE);
 
@@ -78,7 +78,7 @@ static BOARD_ERROR be_board_spi_b_gpio_init(void)
 {
     BOARD_ERROR be_result = BOARD_ERR_OK;
 
-    be_result |= be_board_pin_init( GPIOB,      GPIO_Pin_15,     GPIO_Speed_50MHz,   GPIO_Mode_IN_FLOATING);    /* MOSI_PIN */
+    be_result |= be_board_pin_init( GPIOB,      GPIO_Pin_15,     GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);    /* MOSI_PIN */
     be_result |= be_board_pin_init( GPIOB,      GPIO_Pin_14,     GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);          /* MISO_PIN */
     be_result |= be_board_pin_init( GPIOB,      GPIO_Pin_13,     GPIO_Speed_50MHz,   GPIO_Mode_IN_FLOATING);    /* SCK_PIN */
 
@@ -98,6 +98,7 @@ static BOARD_ERROR be_board_spi_b_module_init(void)
     SPI_InitStructure.SPI_CPOL          = SPI_CPOL_High;                     /* SCK idle high */
     SPI_InitStructure.SPI_CPHA          = SPI_CPHA_2Edge;                    /* second transition -> SCK Idle high => capture on rising edge of clock */
     SPI_InitStructure.SPI_NSS           = SPI_NSS_Hard;
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_64;
     SPI_InitStructure.SPI_FirstBit      = SPI_FirstBit_MSB;
 
     SPI_Init(SPI2, &SPI_InitStructure);
@@ -121,19 +122,6 @@ static BOARD_ERROR be_board_spi_b_module_init(void)
 
 void   SPI1_IRQHandler(void)
 {
- /* SPI_I2S_GetITStatus(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT)    TxE and RxNE
-
-    SPI1_IRQn
-    SPI2_IRQn
-    SPI_I2S_SendData(SPI_TypeDef* SPIx, uint16_t Data)
-    uint16_t SPI_I2S_ReceiveData(SPI_TypeDef* SPIx)
-
-    SPI_I2S_IT	Explanation
-SPI_I2S_IT_TXE	Tx buffer empty interrupt mask
-SPI_I2S_IT_RXNE	Rx buffer not empty interrupt mask
-SPI_I2S_IT_ERR	Error interrupt mask
-    */
-
     if(SPI_I2S_GetITStatus(SPI1, SPI_I2S_IT_TXE)== SET )
     {
         /* To do something. */
@@ -162,9 +150,9 @@ void   SPI2_IRQHandler(void)
     if(SPI_I2S_GetITStatus(SPI2, SPI_I2S_IT_RXNE)== SET )
     {
         /* To do something. */
-        u16_temp = SPI_I2S_ReceiveData(SPI1);
+        u16_temp = SPI_I2S_ReceiveData(SPI2);
         SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
-        SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_RXNE, DISABLE);
+       /* SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_RXNE, DISABLE);*/
     }
 }
 
