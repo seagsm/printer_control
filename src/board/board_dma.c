@@ -377,6 +377,35 @@ void board_dma_send_ERROR(void)
     sv_board_dma_send_packet(u16_i);
 }
 
+/* Function send buffer. Buffer should be minimum 2 bytes. If it will one byte DMA TX will not work. */
+void board_dma_send_buffer(uint8_t* pu8_byte, uint16_t u16_size)
+{
+    uint16_t u16_byte_counter = 0U;
+    uint32_t u32_address = 0U;
+
+    u32_address = (uint32_t)(void *)pu8_byte;
+
+    while( u16_byte_counter < u16_size)
+    {
+        u8_tx_data_packet[u16_byte_counter] = *(uint8_t*)u32_address;
+        u16_byte_counter++;
+        u32_address++;
+        /* To make function faster avoided checking of TX buffer overflow */
+        /* if(u16_byte_counter >= USART_TX_DATA_PACKET_SIZE)
+        {
+            break;
+        }
+        */
+    }
+
+    /* Send packet. */
+    sv_board_dma_send_packet(u16_byte_counter);
+}
+
+
+
+
+
 /* Function send answer float*/
 void board_dma_send_answer_float(uint16_t u16_data_id, float float_data)
 {
