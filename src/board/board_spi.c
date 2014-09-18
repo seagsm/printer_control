@@ -151,7 +151,7 @@ void   SPI2_IRQHandler(void)
     {
         /* To do something. */
         u16_temp = SPI_I2S_ReceiveData(SPI2);
-        SPI_I2S_ClearITPendingBit(SPI1, SPI_I2S_IT_RXNE);
+        SPI_I2S_ClearITPendingBit(SPI2, SPI_I2S_IT_RXNE);
        /* SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_RXNE, DISABLE);*/
     }
 }

@@ -15,6 +15,8 @@
 #include <stm32f10x_tim.h>
 #include <misc.h>
 
+   static                 uint8_t u8_buff_value[0x06];
+
 int main( void)
 {
     BOARD_SYSTEM_STATE  bss_state;
@@ -60,11 +62,93 @@ int main( void)
 
                 {
                     static uint16_t u16_value = 0U;
-                    uint8_t u8_buff_value[4] = {0x33U,0x44U,0x0AU,0x0DU};
+                    uint8_t u8_byte_counter = 0U;
+
                     SPI_I2S_SendData(SPI1, (uint16_t)u16_value);
                     u16_value++;
 
-                    board_dma_send_buffer(u8_buff_value, 0x04U);
+/*
+0x30 0
+0x31 1
+0x32 2
+0x33 3
+0x34 4
+0x35 5
+0x36 6
+0x37 7
+0x38 8
+0x39 9
+0x41 A
+0x42 B
+0x43 C
+0x44 D
+0x45 E
+0x46 F
+ */
+                    u8_buff_value[3] = (uint8_t)(u16_value & 0x000FU);
+                    u8_buff_value[2] = (uint8_t)((u16_value & 0x00F0U)>> 4 );
+                    u8_buff_value[1] = (uint8_t)((u16_value & 0x0F00U)>> 8 );
+                    u8_buff_value[0] = (uint8_t)((u16_value & 0xF000U)>> 12);
+                    u8_buff_value[4] = 0x0AU;
+                    u8_buff_value[5] = 0x0DU;
+
+                    for (u8_byte_counter = 0U; u8_byte_counter < 0x04U; u8_byte_counter++)
+                    {
+                        switch(u8_buff_value[u8_byte_counter])
+                        {
+                            case 0x00U:
+                                u8_buff_value[u8_byte_counter] = 0x30U;
+                            break;
+                            case 0x01U:
+                                u8_buff_value[u8_byte_counter] = 0x31U;
+                            break;
+                            case 0x02U:
+                                u8_buff_value[u8_byte_counter] = 0x32U;
+                            break;
+                            case 0x03U:
+                                u8_buff_value[u8_byte_counter] = 0x33U;
+                            break;
+                            case 0x04U:
+                                u8_buff_value[u8_byte_counter] = 0x34U;
+                            break;
+                            case 0x05U:
+                                u8_buff_value[u8_byte_counter] = 0x35U;
+                            break;
+                            case 0x06U:
+                                u8_buff_value[u8_byte_counter] = 0x36U;
+                            break;
+                            case 0x07U:
+                                u8_buff_value[u8_byte_counter] = 0x37U;
+                            break;
+                            case 0x08U:
+                                u8_buff_value[u8_byte_counter] = 0x38U;
+                            break;
+                            case 0x09U:
+                                u8_buff_value[u8_byte_counter] = 0x39U;
+                            break;
+                            case 0x0AU:
+                                u8_buff_value[u8_byte_counter] = 0x41U;
+                            break;
+                            case 0x0BU:
+                                u8_buff_value[u8_byte_counter] = 0x42U;
+                            break;
+                            case 0x0CU:
+                                u8_buff_value[u8_byte_counter] = 0x43U;
+                            break;
+                            case 0x0DU:
+                                u8_buff_value[u8_byte_counter] = 0x44U;
+                            break;
+                            case 0x0EU:
+                                u8_buff_value[u8_byte_counter] = 0x45U;
+                            break;
+                            case 0x0FU:
+                                u8_buff_value[u8_byte_counter] = 0x46U;
+                            break;
+                            default:
+                                break;
+                        }
+                    }
+                    board_dma_send_print_buffer(u8_buff_value, 0x06U);
 
                 }
                 SPI_I2S_ITConfig(SPI1, SPI_I2S_IT_TXE, ENABLE);

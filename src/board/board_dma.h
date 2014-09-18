@@ -49,7 +49,7 @@ void board_dma_send_answer_quaternion(uint16_t u16_data_id, BOARD_QUAT  bq_data)
 void board_dma_send_answer_float_vector3d(uint16_t u16_data_id, BOARD_FLOAT_3X_DATA fv3d_data);
 void board_dma_send_WRITE_OK(void);
 void board_dma_send_ERROR(void);
-void board_dma_send_buffer(uint8_t* pu8_byte, uint16_t u16_size);
+void board_dma_send_print_buffer(uint8_t u8_byte[], uint16_t u16_size);
 
 
 static void board_dma_add_u16_to_packet(uint16_t *pu16_i, uint16_t u16_value);
