@@ -44,8 +44,8 @@ static BOARD_ERROR be_board_spi_a_module_init(void)
     SPI_InitStructure.SPI_Direction     = SPI_Direction_2Lines_FullDuplex;
     SPI_InitStructure.SPI_Mode          = SPI_Mode_Master;
     SPI_InitStructure.SPI_DataSize      = SPI_DataSize_16b;
-    SPI_InitStructure.SPI_CPOL          = SPI_CPOL_High;
-    SPI_InitStructure.SPI_CPHA          = SPI_CPHA_2Edge;
+    SPI_InitStructure.SPI_CPOL          = SPI_CPOL_Low; /* SPI_CPOL_High; */
+    SPI_InitStructure.SPI_CPHA          = SPI_CPHA_1Edge; /* SPI_CPHA_2Edge; */
     SPI_InitStructure.SPI_NSS           = SPI_NSS_Soft;
     SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_64;
     SPI_InitStructure.SPI_FirstBit      = SPI_FirstBit_MSB;
@@ -95,8 +95,8 @@ static BOARD_ERROR be_board_spi_b_module_init(void)
     SPI_InitStructure.SPI_Direction     = SPI_Direction_2Lines_FullDuplex;
     SPI_InitStructure.SPI_Mode          = SPI_Mode_Slave;
     SPI_InitStructure.SPI_DataSize      = SPI_DataSize_16b;
-    SPI_InitStructure.SPI_CPOL          = SPI_CPOL_High;                     /* SCK idle high */
-    SPI_InitStructure.SPI_CPHA          = SPI_CPHA_2Edge;                    /* second transition -> SCK Idle high => capture on rising edge of clock */
+    SPI_InitStructure.SPI_CPOL          = SPI_CPOL_Low; /* SPI_CPOL_High; */ /* SCK idle high */
+    SPI_InitStructure.SPI_CPHA          = SPI_CPHA_1Edge; /* SPI_CPHA_2Edge; */ /* second transition -> SCK Idle high => capture on rising edge of clock */
     SPI_InitStructure.SPI_NSS           = SPI_NSS_Hard;
     SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_64;
     SPI_InitStructure.SPI_FirstBit      = SPI_FirstBit_MSB;
@@ -151,6 +151,8 @@ void   SPI2_IRQHandler(void)
     {
         /* To do something. */
         u16_temp = SPI_I2S_ReceiveData(SPI2);
+        board_dma_print_uint16_t(u16_temp);
+        /* board_dma_print_uint16_t(0x0D0AU); */
         SPI_I2S_ClearITPendingBit(SPI2, SPI_I2S_IT_RXNE);
        /* SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_RXNE, DISABLE);*/
     }

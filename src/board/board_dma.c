@@ -154,7 +154,7 @@ void DMA1_Channel4_IRQHandler(void)
         DMA_Cmd(DMA1_Channel4, ENABLE);
 
         /* clear flag "end_of_TX through DMA channel". */
-        DMA_ClearFlag(DMA_ISR_TCIF4);
+        /* DMA_ClearFlag(DMA_ISR_TCIF4);*/
     }
     else
     {
@@ -378,23 +378,13 @@ void board_dma_send_ERROR(void)
 }
 
 /* Function send sprint buffer. Buffer should be minimum 2 bytes. If it will one byte DMA TX will not work. */
-void board_dma_send_print_buffer(uint8_t u8_byte[], uint16_t u16_size)
+void board_dma_print_uint16_t(uint16_t u16_value)
 {
-    uint16_t u16_byte_counter = 0U;
-
-    while( u16_byte_counter < u16_size)
-    {
-        u8_tx_data_packet[u16_byte_counter] = u8_byte[u16_byte_counter];
-        u16_byte_counter++;
-        /* To make function faster avoided checking of TX buffer overflow */
-        /* if(u16_byte_counter >= USART_TX_DATA_PACKET_SIZE)
-        {
-            break;
-        }
-        */
-    }
+    /* Convert uint16_t to two uint8_t byte. And put in the correct order to uint8_t buffer. */
+    u8_tx_data_packet[0] = (uint8_t)(( u16_value & 0xFF00U) >> 0x08U);/*MSB*/
+    u8_tx_data_packet[1] = (uint8_t)( u16_value & 0x00FFU);/*LSB*/
     /* Send packet. */
-    sv_board_dma_send_packet(u16_byte_counter);
+    sv_board_dma_send_packet(0x02U);
 }
 
 

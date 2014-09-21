@@ -7,6 +7,7 @@
 #include "board_system_type.h"
 #include "board_gpio.h"
 #include "board_sys_tick.h"
+#include "board_dma.h"
 
 /* SPI_A pin definition. */
 #define BOARD_SPI_A_SCK_PIN     GPIO_Pin_5
