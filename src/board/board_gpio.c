@@ -19,12 +19,29 @@ BOARD_ERROR be_board_gpio_init(void)
     /* Turn LED ON.(Just for test.)*/
     GPIO_ResetBits( GPIOB, GPIO_Pin_1);
     GPIO_SetBits( GPIOB, GPIO_Pin_1);
-    
+
     /* This pins using us ordinar GPIO OUT. */
+
+    /* Enable. */
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
     GPIO_ResetBits( GPIOB, GPIO_Pin_12);
+
+    /* Dir. */
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_11, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
+    GPIO_ResetBits( GPIOB, GPIO_Pin_11);
+
+    /* Pulse. */
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
+    GPIO_ResetBits( GPIOB, GPIO_Pin_10);
+
+
     be_result = be_board_pin_init( GPIOA, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
     GPIO_ResetBits( GPIOA, GPIO_Pin_12);
+
+
+
+
+
 
     return(be_result);
 }

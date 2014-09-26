@@ -21,7 +21,8 @@ BOARD_ERROR be_board_uart_init(void)
     be_result |= be_board_dma1_ch5_init();
 
     /* Initialisation of UART3, GPS interface. */
-    be_result |= be_board_uart_uart3_init();
+    /* UART3 disabled. */
+    /* be_result |= be_board_uart_uart3_init(); */
 
     return(be_result);
 }

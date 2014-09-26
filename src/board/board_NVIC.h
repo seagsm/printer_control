@@ -67,6 +67,16 @@
 #define SPI2_IRQn_PRIORITY_GROUP      3U    /* I2C1 RX DMA transfer end.       */
 #define SPI2_IRQn_SUB_PRIORITY_GROUP  0U
 
+/*TIMER2 ****************************************/
+#define TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP       1U
+#define TIMER2_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
+
+/*TIMER3 ****************************************/
+#define TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP       2U
+#define TIMER3_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
+
+
+
 
 
 void NVIC_init(void);
