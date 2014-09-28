@@ -22,17 +22,31 @@ BOARD_ERROR be_board_gpio_init(void)
 
     /* This pins using us ordinar GPIO OUT. */
 
-    /* Enable. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
-    GPIO_ResetBits( GPIOB, GPIO_Pin_12);
+    /* Enable. Output. */
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_2, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
+    GPIO_ResetBits( GPIOB, GPIO_Pin_2);
 
-    /* Dir. */
+    /* Dir. Output. */
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_11, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
     GPIO_ResetBits( GPIOB, GPIO_Pin_11);
 
-    /* Pulse. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
+    /* Pulse. Output. */
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
     GPIO_ResetBits( GPIOB, GPIO_Pin_10);
+
+    /* End Sensor. Input. */
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_IPU);
+
+    /* Button 1. Input. */
+    be_result = be_board_pin_init( GPIOA, GPIO_Pin_0, GPIO_Speed_2MHz,GPIO_Mode_IPU);
+    /* Button 2. Input. */
+    be_result = be_board_pin_init( GPIOA, GPIO_Pin_1, GPIO_Speed_2MHz,GPIO_Mode_IPU);
+    /* Button 3. Input. */
+    be_result = be_board_pin_init( GPIOA, GPIO_Pin_2, GPIO_Speed_2MHz,GPIO_Mode_IPU);
+    /* Button 4. Input. */
+    be_result = be_board_pin_init( GPIOA, GPIO_Pin_3, GPIO_Speed_2MHz,GPIO_Mode_IPU);
+
+
 
 
     be_result = be_board_pin_init( GPIOA, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
