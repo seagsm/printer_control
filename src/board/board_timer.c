@@ -100,35 +100,27 @@ static BOARD_ERROR be_board_timer_set_period(TIM_TypeDef* TIMx, uint16_t TIM_Per
 
 void TIM2_IRQHandler(void)
 {
- static int32_t i32_step_counter = 0;
- static uint8_t u8_direction_flag = 1U;
-
     if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
     {
-
         if(   GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10) == 0U)
         {
-            TIM_Cmd(TIM3, ENABLE);
-            if(u8_direction_flag > 0U)
+            if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) == 0U)
             {
-                i32_step_counter++;
-                if(i32_step_counter >= 51200)
+                if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1) == 1U)
                 {
-                    u8_direction_flag = 0U;
+                    TIM_Cmd(TIM3, ENABLE);
                     GPIO_SetBits(GPIOB, GPIO_Pin_11);
                 }
             }
-            else
+            else if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1) == 0U)
             {
-                i32_step_counter--;
-                if(i32_step_counter < 0)
+                if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) == 1U)
                 {
-                    u8_direction_flag = 1U;
+                    TIM_Cmd(TIM3, ENABLE);
                     GPIO_ResetBits(GPIOB, GPIO_Pin_11);
                 }
             }
         }
-
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
         GPIO_SetBits(GPIOB, GPIO_Pin_12);
     }
