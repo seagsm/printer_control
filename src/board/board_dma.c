@@ -10,7 +10,7 @@ static uint16_t u16_DMA1_CH5_tail_index = 0U;
 static uint16_t u16_DMA1_CH5_intr_index = 0U;
 
 
-uint8_t u8_tx_data_packet[USART_TX_DATA_PACKET_SIZE];
+static uint8_t u8_tx_data_packet[USART_TX_DATA_PACKET_SIZE];
 uint8_t u8_rx_data_packet[USART_TX_DATA_PACKET_SIZE];
 
 /* This function should initialise usart TX dma channel 4. */

@@ -7,8 +7,9 @@ BOARD_ERROR be_board_init_main_init(void)
 {
     uint16_t u16_step = 0U;
     BOARD_ERROR be_result = BOARD_ERR_OK;
-
+#if 0
     u16_board_adc_result[0] = 0U;/* It is temporery solution. */
+#endif
     gv_board_sys_tick_init();
     /* Init interrupt priority group. */
     NVIC_init();
@@ -28,11 +29,13 @@ BOARD_ERROR be_board_init_main_init(void)
                 break;
             case (2U):
                 be_result = be_board_spi_init();/* Init SPI modules. */
+
 /*                be_result = be_board_adc_init(); */   /* Init ADC module. */
                 break;
             case (3U):
                 /* be_result = be_board_ppm_init(); */    /* Init PPM input capture. (Timer_4) */
-                be_board_timer_init();
+                /* be_result = BOARD_ERR_OK; */
+                be_result = be_board_timer_init();
                 break;
             case (4U):
                 /* be_result = be_board_pwm_init(); */    /* Init PWM chanels. (Timer_2 and Timer_3)*/

@@ -28,7 +28,7 @@
 #define USART_TX_DATA_PACKET_SIZE   TX_USART1_SIZE
 #define USART_RX_DATA_PACKET_SIZE   RX_USART1_SIZE
 
-extern uint8_t u8_tx_data_packet[USART_TX_DATA_PACKET_SIZE];
+/* extern uint8_t u8_tx_data_packet[USART_TX_DATA_PACKET_SIZE];*/
 
 
 BOARD_ERROR be_board_dma1_ch4_init(void);

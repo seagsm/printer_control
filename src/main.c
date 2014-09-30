@@ -54,7 +54,9 @@ int main( void)
                 if(bss_board_state_get_current_state() != BOARD_SYSTEM_RUN )
                 {
                     /* Start main loop interrupt. */
+#if 0
                     be_api_main_loop_start();
+#endif
                     v_board_state_update_current_state(BOARD_SYSTEM_RUN);
                 }
 
@@ -94,7 +96,9 @@ int main( void)
                 break;
             case BOARD_SYSTEM_MOTOR_CALIBRATION:/* Calibration of motor ESD controller.*/
                 v_board_state_update_current_state(BOARD_SYSTEM_MOTOR_CALIBRATION);
+#if 0
                 be_result = be_board_system_init_motor_calibration();
+#endif
                 break;
             case BOARD_SYSTEM_FAULT:
                 v_board_state_update_current_state(BOARD_SYSTEM_FAULT);

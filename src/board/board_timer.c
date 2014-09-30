@@ -1,10 +1,10 @@
 
 #include "board_timer.h"
 
-
 BOARD_ERROR be_board_timer_init(void)
 {
     BOARD_ERROR be_result = BOARD_ERR_OK;
+
 
     be_board_timer_module_init(
                                 TIM2,
@@ -15,6 +15,7 @@ BOARD_ERROR be_board_timer_init(void)
                                 TIM_CKD_DIV1,
                                 TIM_CounterMode_Up
                               );
+
     be_board_timer_module_init(
                                 TIM3,
                                 TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP,
@@ -24,6 +25,7 @@ BOARD_ERROR be_board_timer_init(void)
                                 TIM_CKD_DIV1,
                                 TIM_CounterMode_Up
                               );
+
     /* Start generation. */
     TIM_Cmd(TIM2, ENABLE);
 
@@ -46,6 +48,8 @@ static BOARD_ERROR be_board_timer_module_init(
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
     IRQn_Type               TIM_IRQn;
     uint32_t                RCC_APB1Periph = 0U;
+
+    TIM_DeInit(TIM_timer);
 
     if(TIM_timer == TIM2)
     {
@@ -71,6 +75,7 @@ static BOARD_ERROR be_board_timer_module_init(
         TIM_TimeBaseStructure.TIM_Prescaler      = TIM_Prescaler;          /* Ftimer=fsys/Prescaler,for Prescaler=72 ,Ftimer=1MHz */
         TIM_TimeBaseStructure.TIM_ClockDivision  = TIM_ClockDivision;
         TIM_TimeBaseStructure.TIM_CounterMode    = TIM_CounterMode;
+
         TIM_TimeBaseInit(TIM_timer, &TIM_TimeBaseStructure);
 
         TIM_ClearITPendingBit(TIM_timer, TIM_IT_Update);
@@ -131,9 +136,9 @@ void TIM3_IRQHandler(void)
 {
     if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
+        TIM_Cmd(TIM3, DISABLE);
         TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
         GPIO_ResetBits(GPIOB, GPIO_Pin_12);
-        TIM_Cmd(TIM3, DISABLE);
+
     }
 }
-
