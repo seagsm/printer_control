@@ -21,6 +21,7 @@
 #include "board_timer.h"
 #include "api_i2c_acquisition.h"
 #include "api_main_loop.h"
+#include "board_spi_dma.h"
 
 
 /* #define BOARD_INIT_TOTAL_STEPS 12U */

@@ -8,6 +8,8 @@
 #include "board_gpio.h"
 #include "board_sys_tick.h"
 #include "board_dma.h"
+#include "board_timer.h"
+
 
 /* SPI_A pin definition. */
 #define BOARD_SPI_A_SCK_PIN     GPIO_Pin_5

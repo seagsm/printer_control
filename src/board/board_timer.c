@@ -1,6 +1,10 @@
 
 #include "board_timer.h"
 
+
+static uint8_t u8_step_on;
+
+
 BOARD_ERROR be_board_timer_init(void)
 {
     BOARD_ERROR be_result = BOARD_ERR_OK;
@@ -107,7 +111,7 @@ void TIM2_IRQHandler(void)
 {
     if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
     {
-        if(   GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10) == 0U)
+        if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10) == 0U)
         {
             if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) == 0U)
             {
@@ -125,6 +129,11 @@ void TIM2_IRQHandler(void)
                     GPIO_ResetBits(GPIOB, GPIO_Pin_11);
                 }
             }
+            else if(u8_step_on == 1U)
+            {
+                TIM_Cmd(TIM3, ENABLE);
+                u8_step_on = 0U;
+            }
         }
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
         GPIO_SetBits(GPIOB, GPIO_Pin_12);
@@ -141,4 +150,9 @@ void TIM3_IRQHandler(void)
         GPIO_ResetBits(GPIOB, GPIO_Pin_12);
 
     }
+}
+
+void v_board_timer_set_step(uint8_t u8_step_set)
+{
+    u8_step_on = u8_step_set;
 }

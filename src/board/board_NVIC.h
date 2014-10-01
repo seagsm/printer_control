@@ -41,10 +41,10 @@
 #define DMA1_Channel1_PRIORITY_GROUP      6U    /* ADC channels DMA transfer end.  */
 #define DMA1_Channel1_SUB_PRIORITY_GROUP  0U
 
-#define DMA1_Channel2_PRIORITY_GROUP      4U    /* UART3 DMA TX transfer end. GPS  */
+#define DMA1_Channel2_PRIORITY_GROUP      4U    /* UART3 DMA TX transfer end. GPS, SPI1_RX. */
 #define DMA1_Channel2_SUB_PRIORITY_GROUP  0U
 
-#define DMA1_Channel3_PRIORITY_GROUP      4U    /* UART3 DMA RX transfer end. GPS  */
+#define DMA1_Channel3_PRIORITY_GROUP      4U    /* UART3 DMA RX transfer end. GPS, SPI1_TX. */
 #define DMA1_Channel3_SUB_PRIORITY_GROUP  0U
 
 #define DMA1_Channel4_PRIORITY_GROUP      14U   /* UART1 DMA TX transfer end. COM1 */

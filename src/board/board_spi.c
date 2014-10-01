@@ -143,8 +143,6 @@ void   SPI1_IRQHandler(void)
 void   SPI2_IRQHandler(void)
 {
     uint16_t u16_temp = 0U;
-    static uint16_t u16_old = 0U;
-
     if(SPI_I2S_GetITStatus(SPI2, SPI_I2S_IT_TXE)== SET )
     {
         /* To do something. */
@@ -157,11 +155,17 @@ void   SPI2_IRQHandler(void)
     {
         /* To do something. */
         u16_temp = SPI_I2S_ReceiveData(SPI2);
-        if(u16_old != u16_temp)
+        if(u16_temp == 0x7063U)
         {
-            board_dma_print_uint16_t(u16_temp);
-            u16_old = u16_temp;
+            GPIO_SetBits(GPIOB, GPIO_Pin_11);
+            /* v_board_timer_set_period(1U); */
         }
+        else if(u16_temp == 0x3063U)
+        {
+            GPIO_ResetBits(GPIOB, GPIO_Pin_11);
+            v_board_timer_set_step(1U);
+        }
+
         SPI_I2S_ClearITPendingBit(SPI2, SPI_I2S_IT_RXNE);
        /* SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_RXNE, DISABLE);*/
     }

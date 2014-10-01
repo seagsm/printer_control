@@ -28,7 +28,8 @@ BOARD_ERROR be_board_init_main_init(void)
                 be_result = be_board_uart_init();   /* Init UART modules. */
                 break;
             case (2U):
-                be_result = be_board_spi_init();/* Init SPI modules. */
+                /* be_result = be_board_spi_init();*//* Init SPI modules. */
+                be_result = board_spi_1_dma_slave_configuration();
 
 /*                be_result = be_board_adc_init(); */   /* Init ADC module. */
                 break;

@@ -60,18 +60,19 @@ int main( void)
                     v_board_state_update_current_state(BOARD_SYSTEM_RUN);
                 }
 
-                {
+                {/*
                     static uint16_t u16_value = 0U;
 
                     SPI_I2S_SendData(SPI1, (uint16_t)u16_value);
                     u16_value++;
 
-                    /*
+
                     board_dma_print_uint16_t(u16_value);
                     board_dma_print_uint16_t(0x0D0AU);
-                   */
+                  SPI_I2S_ITConfig(SPI1, SPI_I2S_IT_TXE, ENABLE);
+
+                    */
                 }
-                SPI_I2S_ITConfig(SPI1, SPI_I2S_IT_TXE, ENABLE);
 
 
                 gv_board_sys_tick_delay(100U);
