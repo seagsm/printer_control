@@ -2328,6 +2328,9 @@
       <name>$PROJ_DIR$\linker\stm32f103xB.icf</name>
     </file>
   </group>
+  <file>
+    <name>$PROJ_DIR$\src\board\board_gpio_table.h</name>
+  </file>
 </project>
 
 

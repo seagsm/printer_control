@@ -4,6 +4,11 @@
 
 
 #include "stm32f10x.h"
+#include <stm32f10x.h>
+#include <stm32f10x_gpio.h>
+#include <stm32f10x_rcc.h>
+#include <stm32f10x_tim.h>
+#include <misc.h>
 #include "board_system_type.h"
 #include "board_init.h"
 #include "board_state.h"

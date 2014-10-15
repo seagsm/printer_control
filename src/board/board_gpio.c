@@ -34,8 +34,13 @@ BOARD_ERROR be_board_gpio_init(void)
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
     GPIO_ResetBits( GPIOB, GPIO_Pin_10);
 
-    /* End Sensor. Input. */
+
+
+    /* GPIO_B_IN_ENCODER_SIDE_END_SENSOR Input. */
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_IPU);
+
+    /* GPIO_B_IN_MOTOR_SIDE_END_SENSOR Input. */
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_0, GPIO_Speed_10MHz,GPIO_Mode_IPU);
 
     /* Button 1. Input. */
     be_result = be_board_pin_init( GPIOA, GPIO_Pin_0, GPIO_Speed_2MHz,GPIO_Mode_IPU);

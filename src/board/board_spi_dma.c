@@ -115,11 +115,11 @@ void DMA1_Channel2_IRQHandler(void)
         {
           case 0xBDFFU : /* CW */
           case 0xBFFFU :
-            GPIO_SetBits(GPIOB, GPIO_Pin_11);
+            v_board_timer_set_dir(0U);
             v_board_timer_set_step(1U);
             break;
           case 0xBDFBU : /* CCW */
-            GPIO_ResetBits(GPIOB, GPIO_Pin_11);
+            v_board_timer_set_dir(1U);
             v_board_timer_set_step(1U);
             break;
 

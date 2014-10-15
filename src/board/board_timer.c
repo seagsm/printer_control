@@ -3,7 +3,7 @@
 
 
 static uint8_t u8_step_on;
-
+static uint8_t u8_dir;
 
 BOARD_ERROR be_board_timer_init(void)
 {
@@ -111,32 +111,52 @@ void TIM2_IRQHandler(void)
 {
     if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
     {
-        if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10) == 0U)
+        if(GPIO_ReadInputDataBit(GPIOA, GPIO_A_IN_BUTTON_3) == 0U)
         {
-            if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) == 0U)
+            if(GPIO_ReadInputDataBit(GPIOA, GPIO_A_IN_BUTTON_4) == 1U)/*if button 4 pressed(manual moving) */
             {
-                if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1) == 1U)
+                if(GPIO_ReadInputDataBit(GPIOB, GPIO_B_IN_MOTOR_SIDE_END_SENSOR) == 0U)/* and if end not reached. */
                 {
                     TIM_Cmd(TIM3, ENABLE);
-                    GPIO_SetBits(GPIOB, GPIO_Pin_11);
+                    GPIO_ResetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);/* Direction to motor side. */
                 }
             }
-            else if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_1) == 0U)
+        }
+        else if(GPIO_ReadInputDataBit(GPIOA, GPIO_A_IN_BUTTON_4) == 0U)
+        {
+            if(GPIO_ReadInputDataBit(GPIOA, GPIO_A_IN_BUTTON_3) == 1U)/*if button 3 pressed */
             {
-                if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) == 1U)
+                if(GPIO_ReadInputDataBit(GPIOB, GPIO_B_IN_ENCODER_SIDE_END_SENSOR) == 0U)/* and if end not reached. */
+                {
+
+                    TIM_Cmd(TIM3, ENABLE);
+                    GPIO_SetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);/* Direction to encoder side. */
+                }
+            }
+        }
+        else if(u8_step_on == 1U) /* If step requered from SPI_DMA, start TIM 3. */
+        {
+            if(u8_dir == 1U)
+            {
+                if(GPIO_ReadInputDataBit(GPIOB, GPIO_B_IN_ENCODER_SIDE_END_SENSOR) == 0U)/* and if end not reached. */
                 {
                     TIM_Cmd(TIM3, ENABLE);
-                    GPIO_ResetBits(GPIOB, GPIO_Pin_11);
+                    GPIO_SetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);   /* DIR */
+                    u8_step_on = 0U;
                 }
             }
-            else if(u8_step_on == 1U)
+            else
             {
-                TIM_Cmd(TIM3, ENABLE);
-                u8_step_on = 0U;
+                if(GPIO_ReadInputDataBit(GPIOB, GPIO_B_IN_MOTOR_SIDE_END_SENSOR) == 0U)
+                {
+                    TIM_Cmd(TIM3, ENABLE);
+                    GPIO_ResetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);   /* DIR */
+                    u8_step_on = 0U;
+                }
             }
         }
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-        GPIO_SetBits(GPIOB, GPIO_Pin_12);
+        GPIO_SetBits(GPIOB, GPIO_B_OUT_MOTOR_STEP);
     }
 }
 
@@ -152,7 +172,23 @@ void TIM3_IRQHandler(void)
     }
 }
 
+/* Set step state. */
 void v_board_timer_set_step(uint8_t u8_step_set)
 {
     u8_step_on = u8_step_set;
 }
+
+/* Set step state. */
+void v_board_timer_set_dir(uint8_t u8_dir_set)
+{
+    u8_dir = u8_dir_set;
+}
+
+
+
+
+
+
+
+
+
