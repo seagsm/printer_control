@@ -34,28 +34,40 @@ BOARD_ERROR be_board_gpio_init(void)
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
     GPIO_ResetBits( GPIOB, GPIO_Pin_10);
 
+    /* Encoder A. Output. */
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_7, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); /* PB7 */
+    GPIO_ResetBits( GPIOB, GPIO_Pin_7);
+
+    /* Encoder B. Output. */
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_6, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); /* PB6 */
+    GPIO_ResetBits( GPIOB, GPIO_Pin_6);
 
 
     /* GPIO_B_IN_ENCODER_SIDE_END_SENSOR Input. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_IPU);
-
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PB10 */
     /* GPIO_B_IN_MOTOR_SIDE_END_SENSOR Input. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_0, GPIO_Speed_10MHz,GPIO_Mode_IPU);
+    be_result = be_board_pin_init( GPIOB, GPIO_Pin_0, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PB0 */
+    /* PE printer Input. */
+    be_result = be_board_pin_init( GPIOC, GPIO_Pin_13, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC13 */
+    /* AGP Input. */
+    be_result = be_board_pin_init( GPIOC, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC14 */
+    /* Head Gear Input. */
+    be_result = be_board_pin_init( GPIOC, GPIO_Pin_15, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC15 */
 
     /* Button 1. Input. */
-    be_result = be_board_pin_init( GPIOA, GPIO_Pin_0, GPIO_Speed_2MHz,GPIO_Mode_IPU);
+    be_result = be_board_pin_init( GPIOA, GPIO_Pin_0, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA0 */
     /* Button 2. Input. */
-    be_result = be_board_pin_init( GPIOA, GPIO_Pin_1, GPIO_Speed_2MHz,GPIO_Mode_IPU);
+    be_result = be_board_pin_init( GPIOA, GPIO_Pin_1, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA1 */
     /* Button 3. Input. */
-    be_result = be_board_pin_init( GPIOA, GPIO_Pin_2, GPIO_Speed_2MHz,GPIO_Mode_IPU);
+    be_result = be_board_pin_init( GPIOA, GPIO_Pin_2, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA2 */
     /* Button 4. Input. */
-    be_result = be_board_pin_init( GPIOA, GPIO_Pin_3, GPIO_Speed_2MHz,GPIO_Mode_IPU);
+    be_result = be_board_pin_init( GPIOA, GPIO_Pin_3, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA3 */
 
 #endif
 
 
-    be_result = be_board_pin_init( GPIOA, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
-    GPIO_ResetBits( GPIOA, GPIO_Pin_12);
+    /* be_result = be_board_pin_init( GPIOA, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); */ /* PA12 */
+    /* GPIO_ResetBits( GPIOA, GPIO_Pin_12); */
 
 
 
