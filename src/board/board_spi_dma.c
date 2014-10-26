@@ -117,10 +117,12 @@ void DMA1_Channel2_IRQHandler(void)
           case 0xBFFFU :
             v_board_timer_set_dir(0U);
             v_board_timer_set_step(1U);
+            be_board_pf_encoder_level(0U);
             break;
           case 0xBDFBU : /* CCW */
             v_board_timer_set_dir(1U);
             v_board_timer_set_step(1U);
+            be_board_pf_encoder_level(1U);
             break;
 
           default:

@@ -14,8 +14,8 @@ BOARD_ERROR be_board_timer_init(void)
                                 TIM2,
                                 TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP,
                                 TIMER2_PERIOD_INTERUPT_SUB_PRIORITY_GROUP,
-                                50U,/* 20 is 20uS period for 72 prescaler. */
-                                72U,/* Ftimer=fsys/Prescaler,for Prescaler=72 ,Ftimer=1MHz */
+                                25U,/* 20 is 20uS period for 72 prescaler. */
+                                36U,/* Ftimer=fsys/Prescaler,for Prescaler=72 ,Ftimer=1MHz */
                                 TIM_CKD_DIV1,
                                 TIM_CounterMode_Up
                               );
@@ -25,7 +25,7 @@ BOARD_ERROR be_board_timer_init(void)
                                 TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP,
                                 TIMER3_PERIOD_INTERUPT_SUB_PRIORITY_GROUP,
                                 10U,
-                                72U,
+                                36U,
                                 TIM_CKD_DIV1,
                                 TIM_CounterMode_Up
                               );
@@ -109,8 +109,11 @@ static BOARD_ERROR be_board_timer_set_period(TIM_TypeDef* TIMx, uint16_t TIM_Per
 
 void TIM2_IRQHandler(void)
 {
+    uint8_t    u8_head_gear_flag = 0U;
+    static uint32_t u32_encoder_pulse_counter = 0U;
     if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
     {
+        /* Button part start. */
         if(GPIO_ReadInputDataBit(GPIOA, GPIO_A_IN_BUTTON_3) == 0U)
         {
             if(GPIO_ReadInputDataBit(GPIOA, GPIO_A_IN_BUTTON_4) == 1U)/*if button 4 pressed(manual moving) */
@@ -133,28 +136,57 @@ void TIM2_IRQHandler(void)
                     GPIO_SetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);/* Direction to encoder side. */
                 }
             }
-        }
+        }/* SPI command start. */
         else if(u8_step_on == 1U) /* If step requered from SPI_DMA, start TIM 3. */
         {
-            if(u8_dir == 1U)
+            u32_encoder_pulse_counter = 50U;
+            u8_head_gear_flag = GPIO_ReadInputDataBit(GPIOC, GPIO_C_IN_HEAD_GEAR_SENSOR);
+            switch(u8_head_gear_flag)
             {
-                if(GPIO_ReadInputDataBit(GPIOB, GPIO_B_IN_ENCODER_SIDE_END_SENSOR) == 0U)/* and if end not reached. */
-                {
-                    TIM_Cmd(TIM3, ENABLE);
-                    GPIO_SetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);   /* DIR */
+                case 1U:
+                    /*Gear off. */
+                    if(u8_dir == 1U)
+                    {/* CCW */
+                        if(GPIO_ReadInputDataBit(GPIOB, GPIO_B_IN_ENCODER_SIDE_END_SENSOR) == 0U)/* and if end not reached. */
+                        {
+                            TIM_Cmd(TIM3, ENABLE);
+                            GPIO_SetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);   /* DIR */
+                            u8_step_on = 0U;
+                        }
+                    }
+                    else
+                    {/* CW */
+                        if(GPIO_ReadInputDataBit(GPIOB, GPIO_B_IN_MOTOR_SIDE_END_SENSOR) == 0U)
+                        {
+                            TIM_Cmd(TIM3, ENABLE);
+                            GPIO_ResetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);   /* DIR */
+                            u8_step_on = 0U;
+                        }
+                    }
+                    break;
+                case 0U:
+                    /* Gear on. */
+                    /* This function have to log AGP sensor. */
+                     /* be_board_agp_get(u8_dir); */
+                    be_board_agp_set(u8_dir);
                     u8_step_on = 0U;
-                }
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                if(GPIO_ReadInputDataBit(GPIOB, GPIO_B_IN_MOTOR_SIDE_END_SENSOR) == 0U)
-                {
-                    TIM_Cmd(TIM3, ENABLE);
-                    GPIO_ResetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);   /* DIR */
-                    u8_step_on = 0U;
-                }
-            }
+           /* be_board_pf_encoder_set(u8_dir);*/
         }
+
+        /* Emulate encoder. */
+#if 0
+        if(u32_encoder_pulse_counter > 0U)
+        {
+            be_board_pf_encoder_set(u8_dir);
+            u32_encoder_pulse_counter--;
+        }
+#else
+           /*  be_board_pf_encoder_set(u8_dir); */
+#endif
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
         GPIO_SetBits(GPIOB, GPIO_B_OUT_MOTOR_STEP);
     }

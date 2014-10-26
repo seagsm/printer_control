@@ -5,6 +5,8 @@
 #include "board_system_type.h"
 #include "board_NVIC.h"
 #include "board_gpio_table.h"
+#include "board_agp.h"
+#include "board_pf_encoder.h"
 
 BOARD_ERROR be_board_timer_init(void);
 static BOARD_ERROR be_board_timer_module_init(

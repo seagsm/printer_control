@@ -8,17 +8,16 @@
 #define GPIO_B_OUT_MOTOR_STEP                   GPIO_Pin_12
 #define GPIO_B_OUT_MOTOR_ENABLE
 
-#define GPIO_B_OUT_ENCODER_A
-#define GPIO_B_OUT_ENCODER_B
+#define GPIO_B_OUT_ENCODER_A                    GPIO_Pin_7
+#define GPIO_B_OUT_ENCODER_B                    GPIO_Pin_6
 
 
 #define GPIO_B_IN_ENCODER_SIDE_END_SENSOR       GPIO_Pin_10
 #define GPIO_B_IN_MOTOR_SIDE_END_SENSOR         GPIO_Pin_0
 
-#define GPIO_B_IN_HEAD_GEAR_SENSOR
-#define GPIO_B_IN_PE_SENSOR
-#define GPIO_B_IN_APG_SENSOR
-
+#define GPIO_C_IN_PE_SENSOR                     GPIO_Pin_13
+#define GPIO_C_IN_APG_SENSOR                    GPIO_Pin_14
+#define GPIO_C_IN_HEAD_GEAR_SENSOR              GPIO_Pin_15
 
 #define GPIO_A_IN_BUTTON_1                      GPIO_Pin_0
 #define GPIO_A_IN_BUTTON_2                      GPIO_Pin_1

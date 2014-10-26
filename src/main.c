@@ -15,10 +15,6 @@ int main( void)
     BOARD_ERROR         be_result = BOARD_ERR_OK;
 
     v_board_state_set_required_state(BOARD_SYSTEM_INIT);
-    /*TODO:
-                    Should be done calibration of PPM input for current minimum
-                    and maximum value for each channel.
-     */
 
     while(1U)
     {
@@ -54,40 +50,10 @@ int main( void)
                     v_board_state_update_current_state(BOARD_SYSTEM_RUN);
                 }
 
-                {/*
-                    static uint16_t u16_value = 0U;
-
-                    SPI_I2S_SendData(SPI1, (uint16_t)u16_value);
-                    u16_value++;
-
-
-                    board_dma_print_uint16_t(u16_value);
-                    board_dma_print_uint16_t(0x0D0AU);
-                  SPI_I2S_ITConfig(SPI1, SPI_I2S_IT_TXE, ENABLE);
-
-                    */
-                }
-
 
                 gv_board_sys_tick_delay(100U);
                 /* timer2_PWM_duty_CH1(bc_channel_value_structure.u16_channel_1_value); *//* send data to servo. */
 
-#if 0
-                GPIO_SetBits( GPIOA, GPIO_Pin_12);
-                gv_board_sys_tick_fast_delay(50U);
-                GPIO_ResetBits( GPIOA, GPIO_Pin_12);
-#endif
-                /* Led. */
-                GPIO_SetBits( GPIOB, GPIO_Pin_1);
-                gv_board_sys_tick_fast_delay(50U);
-                GPIO_ResetBits( GPIOB, GPIO_Pin_1);
-
-            /*    gv_board_dma_send_packet(); */
-            /*    board_dma_send_buff(); */
-
-                GPIO_SetBits( GPIOB, GPIO_Pin_1);
-                gv_board_sys_tick_fast_delay(50U);
-                GPIO_ResetBits( GPIOB, GPIO_Pin_1);
                 break;
             case BOARD_SYSTEM_MOTOR_CALIBRATION:/* Calibration of motor ESD controller.*/
                 v_board_state_update_current_state(BOARD_SYSTEM_MOTOR_CALIBRATION);

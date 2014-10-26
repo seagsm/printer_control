@@ -42,6 +42,12 @@ BOARD_ERROR be_board_gpio_init(void)
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_6, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); /* PB6 */
     GPIO_ResetBits( GPIOB, GPIO_Pin_6);
 
+#if 1
+    /* AGP emulation output. Reset value have to be "1". */
+     be_result = be_board_pin_init( GPIOC, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); /* PC14 */
+     GPIO_SetBits( GPIOC, GPIO_Pin_14);
+#endif
+
 
     /* GPIO_B_IN_ENCODER_SIDE_END_SENSOR Input. */
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PB10 */
@@ -49,8 +55,12 @@ BOARD_ERROR be_board_gpio_init(void)
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_0, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PB0 */
     /* PE printer Input. */
     be_result = be_board_pin_init( GPIOC, GPIO_Pin_13, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC13 */
+
+#if 0
     /* AGP Input. */
     be_result = be_board_pin_init( GPIOC, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC14 */
+#endif
+
     /* Head Gear Input. */
     be_result = be_board_pin_init( GPIOC, GPIO_Pin_15, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC15 */
 
