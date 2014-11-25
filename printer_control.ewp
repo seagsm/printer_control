@@ -1973,6 +1973,12 @@
         </excluded>
       </file>
       <file>
+        <name>$PROJ_DIR$\src\board\board_agp.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\board\board_agp.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\src\board\board_baro.c</name>
         <excluded>
           <configuration>Debug</configuration>
@@ -2115,6 +2121,12 @@
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_NVIC.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\board\board_pf_encoder.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\board\board_pf_encoder.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_ppm.c</name>
