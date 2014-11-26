@@ -9,6 +9,7 @@
 #include "board_dma.h"
 #include "board_timer.h"
 #include "board_pf_encoder.h"
+#include "board_capture.h"
 
 /* SPI_A pin definition. */
 #define BOARD_SPI_1_SCK_PIN     GPIO_Pin_5

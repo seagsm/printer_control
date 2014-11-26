@@ -10,6 +10,10 @@ BOARD_ERROR be_board_pwm_init(void)
 {
     BOARD_ERROR be_result = BOARD_ERR_OK;
 
+    be_TIMER3_PWM_channel_init(CHANEL_3,1000U,50U);
+    TIM_Cmd(TIM3, ENABLE);
+
+#if 0    
     be_TIMER2_PWM_channel_init(CHANEL_1,PWM_PERIOD_ANALOG,PWM_DUTY_INITIAL);
     be_TIMER2_PWM_channel_init(CHANEL_2,PWM_PERIOD_ANALOG,PWM_DUTY_INITIAL);
     be_TIMER2_PWM_channel_init(CHANEL_3,PWM_PERIOD_ANALOG,PWM_DUTY_INITIAL);
@@ -26,7 +30,8 @@ BOARD_ERROR be_board_pwm_init(void)
     /*  be_TIMER3_PWM_channel_init(4,PWM_PERIOD_TIMER2,PWM_DUTY_INITIAL_TIMER2); // Pin connected to led.*/
     /* Start TIMER4. */
     TIM_Cmd(TIM3, ENABLE);
-
+#endif
+    
     return(be_result);
 }
 
@@ -157,7 +162,7 @@ static BOARD_ERROR be_TIMER3_PWM_channel_init(
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
     /* Time Base configuration. */
     TIM_TimeBaseStructure.TIM_Period        = u16_pwm_period;
-    TIM_TimeBaseStructure.TIM_Prescaler     = 72U;         /* Ftimer=Fsys/Prescaler,for Fsys=72MHz and Prescaler=72, Ftimer=1MHz. */
+    TIM_TimeBaseStructure.TIM_Prescaler     = 4U;         /* Ftimer=Fsys/Prescaler,for Fsys=72MHz and Prescaler=72, Ftimer=1MHz. */
     TIM_TimeBaseStructure.TIM_ClockDivision = 0U;
     TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);

@@ -2043,6 +2043,12 @@
         </excluded>
       </file>
       <file>
+        <name>$PROJ_DIR$\src\board\board_capture.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\src\board\board_capture.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\src\board\board_dma.c</name>
       </file>
       <file>
@@ -2194,15 +2200,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_pwm.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_pwm.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_r_buff.c</name>
@@ -2212,9 +2212,15 @@
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_spi.c</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_spi.h</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_spi_dma.c</name>
@@ -2251,9 +2257,15 @@
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_timer.c</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_timer.h</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_uart.c</name>

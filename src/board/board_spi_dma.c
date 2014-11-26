@@ -113,20 +113,24 @@ void DMA1_Channel2_IRQHandler(void)
     {
         switch(SPIReceivedValue[1])
         {
-          case 0xBDFFU : /* CW */
-          case 0xBFFFU :
-            v_board_timer_set_dir(0U);
-            v_board_timer_set_step(1U);
-            be_board_pf_encoder_level(0U);
-            break;
-          case 0xBDFBU : /* CCW */
-            v_board_timer_set_dir(1U);
-            v_board_timer_set_step(1U);
-            be_board_pf_encoder_level(1U);
-            break;
+            case 0xBDFFU : /* CW */
+            case 0xBFFFU :
+                board_capture_set_pwm_command(PWM_CAPTURE_CW_START); 
+                board_capture_pwm_TIM_2_start(); 
+                break;
 
-          default:
-            break;
+            case 0xBDFBU : /* CCW */
+                board_capture_set_pwm_command(PWM_CAPTURE_CCW_START);
+                board_capture_pwm_TIM_4_start();
+                break;
+            
+            case 0xBDFDU : /* STOP */
+                board_capture_set_pwm_command(PWM_CAPTURE_STOP); 
+                board_capture_pwm_TIM_2_stop();
+                board_capture_pwm_TIM_4_stop();
+                break;
+            default:
+                break;
         }
     }
 }

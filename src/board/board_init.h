@@ -22,10 +22,11 @@
 #include "api_i2c_acquisition.h"
 #include "api_main_loop.h"
 #include "board_spi_dma.h"
+#include "board_capture.h"
 
 
 /* #define BOARD_INIT_TOTAL_STEPS 12U */
-#define BOARD_INIT_TOTAL_STEPS 4U
+#define BOARD_INIT_TOTAL_STEPS 6U
 BOARD_ERROR be_board_init_main_init(void);
 
 

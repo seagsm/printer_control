@@ -11,15 +11,11 @@ BOARD_ERROR be_board_gpio_init(void)
 
     /* PB1 connected to Blue LED on board. This pin has not external board connection. */
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_1, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
-    /*
-        The LED should switch ON/OFF using functions
-        GPIO_SetBits( GPIOB, GPIO_Pin_1);
-        GPIO_ResetBits( GPIOB, GPIO_Pin_1);
-    */
-    /* Turn LED ON.(Just for test.)*/
-    GPIO_ResetBits( GPIOB, GPIO_Pin_1);
 
-#if 1
+    /* Turn LED ON.(Just for test.)*/
+    GPIO_SetBits( GPIOB, GPIO_Pin_1);
+
+#if 0
     /* This pins using us ordinar GPIO OUT. */
 
     /* Enable. Output. */
@@ -42,12 +38,13 @@ BOARD_ERROR be_board_gpio_init(void)
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_6, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); /* PB6 */
     GPIO_ResetBits( GPIOB, GPIO_Pin_6);
 
-#if 1
+#if 0
     /* AGP emulation output. Reset value have to be "1". */
      be_result = be_board_pin_init( GPIOC, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); /* PC14 */
      GPIO_SetBits( GPIOC, GPIO_Pin_14);
 #endif
 
+#if 0
 
     /* GPIO_B_IN_ENCODER_SIDE_END_SENSOR Input. */
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PB10 */
@@ -55,12 +52,14 @@ BOARD_ERROR be_board_gpio_init(void)
     be_result = be_board_pin_init( GPIOB, GPIO_Pin_0, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PB0 */
     /* PE printer Input. */
     be_result = be_board_pin_init( GPIOC, GPIO_Pin_13, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC13 */
-
+#endif
+    
 #if 0
     /* AGP Input. */
     be_result = be_board_pin_init( GPIOC, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC14 */
 #endif
 
+#if 0
     /* Head Gear Input. */
     be_result = be_board_pin_init( GPIOC, GPIO_Pin_15, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC15 */
 
@@ -72,7 +71,9 @@ BOARD_ERROR be_board_gpio_init(void)
     be_result = be_board_pin_init( GPIOA, GPIO_Pin_2, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA2 */
     /* Button 4. Input. */
     be_result = be_board_pin_init( GPIOA, GPIO_Pin_3, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA3 */
-
+#endif
+    
+    
 #endif
 
 

@@ -75,6 +75,17 @@ typedef enum
     BOARD_ERR_STATE     = 8U
 }   BOARD_ERROR; /* variable tag be_xxx */
 
+
+typedef enum
+{
+    PWM_CAPTURE_STOP        = 0,
+    PWM_CAPTURE_CW_START    = 1,
+    PWM_CAPTURE_CCW_START   = 2               
+
+}   PWM_CAPTURE_STATE; /* PWM capture command - start , stop... */
+
+
+
 typedef struct
 {
     uint16_t u16_channel_1_value;

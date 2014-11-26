@@ -30,18 +30,21 @@ BOARD_ERROR be_board_init_main_init(void)
             case (2U):
                 /* be_result = be_board_spi_init();*//* Init SPI modules. */
                 be_result = board_spi_1_dma_slave_configuration();
+                
 /*              be_result = be_board_adc_init(); */   /* Init ADC module. */
                 break;
             case (3U):
                 /* be_result = be_board_ppm_init(); */    /* Init PPM input capture. (Timer_4) */
                 /* be_result = BOARD_ERR_OK; */
-                be_result = be_board_timer_init();
+                /* be_result = be_board_timer_init(); */
                 break;
             case (4U):
-                /* be_result = be_board_pwm_init(); */    /* Init PWM chanels. (Timer_2 and Timer_3)*/
+                be_result = be_board_pwm_init();     /* Init PWM chanels. (Timer_2 and Timer_3)*/
                 break;
             case (5U):
                 /* be_result = be_board_i2c_init(); */   /* Init I2C1 chanels. */
+                be_result = be_board_capture_pwm_init();
+                test();
                 break;
             case (6U):
                 /* be_result = be_board_gyro_init(); */  /* Init gyro module. */
