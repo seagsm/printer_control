@@ -165,6 +165,10 @@ void   SPI2_IRQHandler(void)
             GPIO_ResetBits(GPIOB, GPIO_Pin_11);
             v_board_timer_set_step(1U);
         }
+        else
+        {
+        
+        }
 
         SPI_I2S_ClearITPendingBit(SPI2, SPI_I2S_IT_RXNE);
        /* SPI_I2S_ITConfig(SPI2, SPI_I2S_IT_RXNE, DISABLE);*/

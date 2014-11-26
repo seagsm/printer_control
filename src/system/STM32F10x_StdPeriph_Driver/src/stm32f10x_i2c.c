@@ -100,7 +100,7 @@
 #define CR2_FREQ_Reset          ((uint16_t)0xFFC0)
 
 /* I2C ADD0 mask */
-#define OAR1_ADD0_Set           ((uint16_t)0x0001)
+#define OAR1_ADD0_Set           ((uint16_t)0x0001U)
 #define OAR1_ADD0_Reset         ((uint16_t)0xFFFE)
 
 /* I2C ENDUAL mask */
@@ -607,7 +607,7 @@ void I2C_Send7bitAddress(I2C_TypeDef* I2Cx, uint8_t Address, uint8_t I2C_Directi
   if (I2C_Direction != I2C_Direction_Transmitter)
   {
     /* Set the address bit0 for read */
-    Address |= OAR1_ADD0_Set;
+    Address |= (uint8_t)OAR1_ADD0_Set;
   }
   else
   {

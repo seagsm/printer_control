@@ -176,6 +176,10 @@ void TIM2_IRQHandler(void)
             }
            /* be_board_pf_encoder_set(u8_dir);*/
         }
+        else
+        {
+        
+        }
 
         /* Emulate encoder. */
 #if 0
