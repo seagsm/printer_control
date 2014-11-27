@@ -64,8 +64,8 @@ static BOARD_ERROR be_TIMER2_PWM_channel_init(
 
     /* Time Base configuration */
     TIM_TimeBaseStructure.TIM_Period        = u16_pwm_period;   /* PWM period */
-    TIM_TimeBaseStructure.TIM_Prescaler     = 72U;          /* Ftimer=Fsys/Prescaler,for Fsys=72MHz and Prescaler=72 ,Ftimer=1MHz */
-    TIM_TimeBaseStructure.TIM_ClockDivision = 0U;
+    TIM_TimeBaseStructure.TIM_Prescaler     = 71U ;          /* Ftimer=Fsys/(1 + Prescaler),for Fsys=72MHz and Prescaler=72 ,Ftimer=1MHz */
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
     TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
     TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
@@ -162,8 +162,8 @@ static BOARD_ERROR be_TIMER3_PWM_channel_init(
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
     /* Time Base configuration. */
     TIM_TimeBaseStructure.TIM_Period        = u16_pwm_period;
-    TIM_TimeBaseStructure.TIM_Prescaler     = 4U;         /* Ftimer=Fsys/Prescaler,for Fsys=72MHz and Prescaler=72, Ftimer=1MHz. */
-    TIM_TimeBaseStructure.TIM_ClockDivision = 0U;
+    TIM_TimeBaseStructure.TIM_Prescaler     = 3U;         /* Ftimer=Fsys/Prescaler,for Fsys=72MHz and Prescaler=72, Ftimer=1MHz. */
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
     TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 

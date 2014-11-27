@@ -115,19 +115,23 @@ void DMA1_Channel2_IRQHandler(void)
         {
             case 0xBDFFU : /* CW */
             case 0xBFFFU :
-                board_capture_set_pwm_command(PWM_CAPTURE_CW_START); 
-                board_capture_pwm_TIM_2_start(); 
+              
+                if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
+                {  
+                    board_capture_pwm_TIM_start(TIM2); 
+                }
                 break;
 
             case 0xBDFBU : /* CCW */
-                board_capture_set_pwm_command(PWM_CAPTURE_CCW_START);
-                board_capture_pwm_TIM_4_start();
+                if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
+                {  
+                    board_capture_pwm_TIM_start(TIM4); 
+                }
                 break;
             
             case 0xBDFDU : /* STOP */
-                board_capture_set_pwm_command(PWM_CAPTURE_STOP); 
-                board_capture_pwm_TIM_2_stop();
-                board_capture_pwm_TIM_4_stop();
+                board_capture_pwm_TIM_stop(TIM2);
+                board_capture_pwm_TIM_stop(TIM4);
                 break;
             default:
                 break;
@@ -135,13 +139,10 @@ void DMA1_Channel2_IRQHandler(void)
     }
 }
 
-
-
+/* End of DMA transfer IRQ. */
 void DMA1_Channel3_IRQHandler(void)
 {
-
-        NVIC_DisableIRQ(DMA1_Channel3_IRQn);
-
+    NVIC_DisableIRQ(DMA1_Channel3_IRQn);
 }
 
 

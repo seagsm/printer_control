@@ -8,24 +8,27 @@
 #include "board_NVIC.h"
 
 
-
-
 BOARD_ERROR be_board_capture_pwm_init(void);
 
-void board_capture_pwm_TIM_2_start(void);
-void board_capture_pwm_TIM_2_stop(void);
-void board_capture_pwm_TIM_4_start(void);
-void board_capture_pwm_TIM_4_stop(void);
-
-
+void board_capture_pwm_TIM_start(TIM_TypeDef* TIMx);
+void board_capture_pwm_TIM_stop(TIM_TypeDef* TIMx);
 
 static void TIM2_Configuration(void);
-static void GPIO_Configuration(void);
-static void NVIC_Configuration(void);
+
+static void board_capture_gpio_configuration(void);
+static void board_capture_nvic_configuration(void);
+static void board_capture_tim_configuration(void);
+static void board_capture_tim2_configuration(void);
+static void board_capture_tim4_configuration(void);
+
 void TIM2_IRQHandler(void);
+void TIM4_IRQHandler(void);
 void test(void);
 
 PWM_CAPTURE_STATE board_capture_get_pwm_command(void);
 void board_capture_set_pwm_command(PWM_CAPTURE_STATE command);
+
+uint16_t board_capture_pwm_TIM2_duty(void);
+uint16_t board_capture_pwm_TIM4_duty(void);
 
 #endif
