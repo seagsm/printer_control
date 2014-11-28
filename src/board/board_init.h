@@ -23,10 +23,12 @@
 #include "api_main_loop.h"
 #include "board_spi_dma.h"
 #include "board_capture.h"
+#include "board_encoder_emulation.h"
+
 
 
 /* #define BOARD_INIT_TOTAL_STEPS 12U */
-#define BOARD_INIT_TOTAL_STEPS 6U
+#define BOARD_INIT_TOTAL_STEPS 7U
 BOARD_ERROR be_board_init_main_init(void);
 
 

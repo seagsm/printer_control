@@ -27,10 +27,6 @@
 #define USART3_PRIORITY_GROUP 6U
 #define USART3_SUB_PRIORITY   0U
 
-/* TIMER1 MAIN LOOP INTERRUPT ******************/
-#define TIMER1_PERIOD_INTERUPT_PRIORITY_GROUP       8U
-#define TIMER1_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
-
 
 /* TIMER4 CAPTURE ******************************/
 #define TIMER4_CAPTURE_PRIORITY_GROUP 0U        /* PPM capture. */
@@ -67,6 +63,9 @@
 #define SPI2_IRQn_PRIORITY_GROUP      3U    /* .       */
 #define SPI2_IRQn_SUB_PRIORITY_GROUP  0U
 
+/*TIMER1 ****************************************/
+#define TIMER1_PERIOD_INTERUPT_PRIORITY_GROUP       1U
+#define TIMER1_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 /*TIMER2 ****************************************/
 #define TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP       2U
 #define TIMER2_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U

@@ -272,6 +272,7 @@ static void board_capture_tim2_configuration(void)
     TIM_ICInitStructure.TIM_ICFilter = 0x00U;
     TIM_ICInit(TIM2, &TIM_ICInitStructure);
  
+    TIM_ClearITPendingBit(TIM2, TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_Update);
     TIM_ITConfig(TIM2, TIM_IT_CC1, ENABLE);
     TIM_ITConfig(TIM2, TIM_IT_CC2, ENABLE);
     TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
@@ -316,6 +317,7 @@ static void board_capture_tim4_configuration(void)
     TIM_ICInitStructure.TIM_ICFilter = 0x00U;
     TIM_ICInit(TIM4, &TIM_ICInitStructure);
  
+    TIM_ClearITPendingBit(TIM4, TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_Update);
     TIM_ITConfig(TIM4, TIM_IT_CC1, ENABLE);
     TIM_ITConfig(TIM4, TIM_IT_CC2, ENABLE);
     TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);

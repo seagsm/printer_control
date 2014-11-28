@@ -44,9 +44,11 @@ BOARD_ERROR be_board_init_main_init(void)
             case (5U):
                 /* be_result = be_board_i2c_init(); */   /* Init I2C1 chanels. */
                 be_result = be_board_capture_pwm_init();
-                test();
+
                 break;
             case (6U):
+                be_result = board_encoder_emulation_init();
+                test();
                 /* be_result = be_board_gyro_init(); */  /* Init gyro module. */
                 break;
             case (7U):
