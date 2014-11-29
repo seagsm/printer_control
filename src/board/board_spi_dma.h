@@ -6,9 +6,8 @@
 #include "board_system_type.h"
 #include "board_gpio.h"
 #include "board_sys_tick.h"
-#include "board_dma.h"
-#include "board_timer.h"
-#include "board_pf_encoder.h"
+/* #include "board_dma.h" */ 
+
 #include "board_capture.h"
 
 /* SPI_A pin definition. */

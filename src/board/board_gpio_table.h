@@ -26,10 +26,4 @@
 #define GPIO_A_IN_BUTTON_3                      GPIO_Pin_3
 #define GPIO_A_IN_BUTTON_4                      GPIO_Pin_4
 
-
-
-
-
-
-
 #endif

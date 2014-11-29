@@ -57,36 +57,6 @@ static BOARD_ERROR be_board_uart_uart1_init(void)
     return(be_result);
 }
 
-/* This function do initialisation of UART3 module. */
-static BOARD_ERROR be_board_uart_uart3_init(void)
-{
-    BOARD_ERROR be_result = BOARD_ERR_OK;
-
-    /* UART variable structure. */
-    USART_InitTypeDef usart_init_uart;
-
-    /* Setup uart module parameters. */
-    usart_init_uart.USART_BaudRate   = USART3_BAUD_RATE;
-    usart_init_uart.USART_WordLength = USART_WordLength_8b;
-    usart_init_uart.USART_StopBits   = USART_StopBits_1;
-    usart_init_uart.USART_Parity     = USART_Parity_No;
-    usart_init_uart.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    usart_init_uart.USART_Mode       = USART_Mode_Rx | USART_Mode_Tx;
-
-    /* Initialise and enable UART module. */
-    be_result = be_board_uart_module_init(
-                                            USART3,
-                                            &usart_init_uart,
-                                            BOARD_USART3_TX_GPIO_PORT,
-                                            BOARD_USART3_TX_PIN,
-                                            BOARD_USART3_RX_GPIO_PORT,
-                                            BOARD_USART3_RX_PIN
-                                          );
-    /*TODO: somethere here should be added INTERRUPT and/or DMA initialisation. */
-
-    return(be_result);
-}
-
 
 
 /*
