@@ -20,10 +20,6 @@ BOARD_ERROR be_board_uart_init(void)
     be_result |= be_board_dma1_ch4_init();
     be_result |= be_board_dma1_ch5_init();
 
-    /* Initialisation of UART3, GPS interface. */
-    /* UART3 disabled. */
-    /* be_result |= be_board_uart_uart3_init(); */
-
     return(be_result);
 }
 
@@ -52,7 +48,6 @@ static BOARD_ERROR be_board_uart_uart1_init(void)
                                             BOARD_USART1_RX_GPIO_PORT,
                                             BOARD_USART1_RX_PIN
                                           );
-    /*TODO: somethere here should be added INTERRUPT and/or DMA initialisation. */
 
     return(be_result);
 }
