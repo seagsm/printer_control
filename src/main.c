@@ -14,60 +14,60 @@ int main( void)
     BOARD_SYSTEM_STATE  bss_state;
     BOARD_ERROR         be_result = BOARD_ERR_OK;
 
-    v_board_state_set_required_state(BOARD_SYSTEM_INIT);
+    v_board_stateSetRequiredState(BOARD_SYSTEM_INIT);
 
     while(1U)
     {
         if(be_result == BOARD_ERR_ERROR)
         {
-            v_board_state_set_required_state(BOARD_SYSTEM_FAULT);
+            v_board_stateSetRequiredState(BOARD_SYSTEM_FAULT);
         }
-        bss_state = bss_board_state_get_required_state();
+        bss_state = bss_board_stateGetRequiredState();
         switch (bss_state)
         {
+        
             case BOARD_SYSTEM_INIT:
-                v_board_state_update_current_state(BOARD_SYSTEM_INIT);
+                
+                v_board_stateUpdateCurrentState(BOARD_SYSTEM_INIT);
+            
                 be_result = be_board_init_main_init();      /* init main hardware moduls.*/
+            
                 break;
+            
             case BOARD_SYSTEM_READY_TO_RUN:
-                v_board_state_update_current_state(BOARD_SYSTEM_READY_TO_RUN);
-#if 0
-                be_result = be_board_system_init_unlock();  /* init all board system .*/
-#endif
-                /* Should be removed. Real setup inside  be_board_system_init_unlock() */
-                v_board_state_set_required_state(BOARD_SYSTEM_RUN);
+                
+                v_board_stateUpdateCurrentState(BOARD_SYSTEM_READY_TO_RUN);
+                
+                v_board_stateSetRequiredState(BOARD_SYSTEM_RUN);
 
                 break;
 
             case BOARD_SYSTEM_RUN:
                 /* One time switch a board to RUN state. */
-                if(bss_board_state_get_current_state() != BOARD_SYSTEM_RUN )
+                if(bss_board_stateGetCurrentState() != BOARD_SYSTEM_RUN )
                 {
-                    /* Start main loop interrupt. */
-#if 0
-                    be_api_main_loop_start();
-#endif
-                    v_board_state_update_current_state(BOARD_SYSTEM_RUN);
+                    /* One time start function should be added here. */
+                  
+                    /* Start SPI1 + DMA module. */
+                    be_result = board_spi_1_dma_start();
+                    
+                    v_board_stateUpdateCurrentState(BOARD_SYSTEM_RUN);
                 }
-
-
+                /* Infinite start function should be added here. */
                 gv_board_sys_tick_delay(100U);
-                /* timer2_PWM_duty_CH1(bc_channel_value_structure.u16_channel_1_value); *//* send data to servo. */
 
                 break;
-            case BOARD_SYSTEM_MOTOR_CALIBRATION:/* Calibration of motor ESD controller.*/
-                v_board_state_update_current_state(BOARD_SYSTEM_MOTOR_CALIBRATION);
-#if 0
-                be_result = be_board_system_init_motor_calibration();
-#endif
-                break;
+
             case BOARD_SYSTEM_FAULT:
-                v_board_state_update_current_state(BOARD_SYSTEM_FAULT);
+            
+                v_board_stateUpdateCurrentState(BOARD_SYSTEM_FAULT);
+                /* Flash of LED in case of FAULT. */
                 GPIO_SetBits( GPIOB, GPIO_Pin_1);
                 gv_board_sys_tick_delay(400U);
                 GPIO_ResetBits( GPIOB, GPIO_Pin_1);
                 gv_board_sys_tick_delay(400U);
                 break;
+            
             default:
                 break;
         }

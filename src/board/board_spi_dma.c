@@ -15,7 +15,7 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
 
     /* SPI 1 GPIO config. */
     be_board_pin_init( GPIOA,      GPIO_Pin_7,     GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* MOSI_PIN */
-    be_board_pin_init( GPIOA,      GPIO_Pin_6,     GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* MISO_PIN */
+    be_board_pin_init( GPIOA,      GPIO_Pin_6,     GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* MISO_PIN */ /* Can be used like GPIO. */
     be_board_pin_init( GPIOA,      GPIO_Pin_5,     GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* SCK_PIN */
 
 
@@ -68,11 +68,11 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
 
     DMA_Cmd(DMA1_Channel2, ENABLE); /*//Enable the DMA1 - Channel2 */
 
-    /*//==Configure DMA1 - Channel3== (memory -> SPI)*/
-    DMA_DeInit(DMA1_Channel3); /*//Set DMA registers to default values */
+    /* Configure DMA1 - Channel3  (memory -> SPI) */
+    DMA_DeInit(DMA1_Channel3);                                                  /* Set DMA registers to default values */
     DMA_StructInit(&DMA_InitStructure);
-    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI1->DR; /*//Address of peripheral the DMA must map to */
-    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&SPITransmittedValue[0]; /*//Variable from which data will be transmitted */
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI1->DR;             /* Address of peripheral the DMA must map to. */
+    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&SPITransmittedValue[0];   /* Variable from which data will be transmitted. */
     DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
     DMA_InitStructure.DMA_BufferSize = 2U; /*//Buffer size */
     DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
@@ -82,12 +82,13 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
     DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
     DMA_InitStructure.DMA_Priority = DMA_Priority_High;
     DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
-    DMA_Init(DMA1_Channel3, &DMA_InitStructure); /*//Initialise the DMA */
+    DMA_Init(DMA1_Channel3, &DMA_InitStructure);                                /* Initialise the DMA */
 
     DMA_ITConfig(DMA1_Channel3, DMA_IT_TC, ENABLE);
 
     DMA_Cmd(DMA1_Channel3, ENABLE); /*//Enable the DMA1 - Channel5 */
 
+#if 0    
     /* Enable SPI2 */
     SPI_Cmd(SPI1, ENABLE);
 
@@ -95,10 +96,20 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
     SPI_I2S_DMACmd(SPI1, SPI_I2S_DMAReq_Rx | SPI_I2S_DMAReq_Tx, ENABLE);
 
     NVIC_EnableIRQ(DMA1_Channel2_IRQn);
-
+#endif
+    
     return(be_result);
 }
 
+/* Start SPI1, SPI1_DMA interrupt. */
+BOARD_ERROR board_spi_1_dma_start(void)
+{
+    BOARD_ERROR be_result = BOARD_ERR_OK;
+    SPI_Cmd(SPI1, ENABLE);                                                  /* Enable SPI1 */
+    SPI_I2S_DMACmd(SPI1, SPI_I2S_DMAReq_Rx | SPI_I2S_DMAReq_Tx, ENABLE);    /* Enable the SPI1 RX & TX DMA requests */
+    NVIC_EnableIRQ(DMA1_Channel2_IRQn);                                     /* Enable DMA interrupt. */
+    return(be_result);
+}
 
 /* This codes found but not used.
           case 0xBDFDU :
@@ -118,19 +129,29 @@ void DMA1_Channel2_IRQHandler(void)
               
                 if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
                 {  
-                    board_capture_pwm_TIM_start(TIM2); 
+                    /* Start PWM capture from CW channel. */
+                    board_capture_pwm_TIM_start(TIM2);
+                    /* Start encoder emulation module. */
+                    board_encoder_emulation_start();
                 }
                 break;
 
             case 0xBDFBU : /* CCW */
                 if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
                 {  
-                    board_capture_pwm_TIM_start(TIM4); 
+                    /* Start PWM capture from CCW channel. */
+                    board_capture_pwm_TIM_start(TIM4);
+                    /* Start encoder emulation module. */
+                    board_encoder_emulation_start();
                 }
                 break;
             
             case 0xBDFDU : /* STOP */
+                /* Stop encoder emulation. */
+                board_encoder_emulation_stop();
+                /* Stop PWM capture of CW. */
                 board_capture_pwm_TIM_stop(TIM2);
+                /* Stop PWM capture of CCW. */
                 board_capture_pwm_TIM_stop(TIM4);
                 break;
             default:

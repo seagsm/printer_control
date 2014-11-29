@@ -8,83 +8,37 @@
 BOARD_ERROR be_board_gpio_init(void)
 {
     BOARD_ERROR be_result = BOARD_ERR_OK;
-
-    /* PB1 connected to Blue LED on board. This pin has not external board connection. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_1, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
-
-    /* Turn LED ON.(Just for test.)*/
-    GPIO_SetBits( GPIOB, GPIO_Pin_1);
-
-#if 0
-    /* This pins using us ordinar GPIO OUT. */
-
-    /* Enable. Output. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_2, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
-    GPIO_ResetBits( GPIOB, GPIO_Pin_2);
-
-    /* Dir. Output. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_11, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
-    GPIO_ResetBits( GPIOB, GPIO_Pin_11);
-
-    /* Pulse. Output. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);
-    GPIO_ResetBits( GPIOB, GPIO_Pin_10);
-
-    /* Encoder A. Output. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_7, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); /* PB7 */
-    GPIO_ResetBits( GPIOB, GPIO_Pin_7);
-
-    /* Encoder B. Output. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_6, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); /* PB6 */
-    GPIO_ResetBits( GPIOB, GPIO_Pin_6);
-
-#if 0
-    /* AGP emulation output. Reset value have to be "1". */
-     be_result = be_board_pin_init( GPIOC, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); /* PC14 */
-     GPIO_SetBits( GPIOC, GPIO_Pin_14);
-#endif
-
-#if 0
-
-    /* GPIO_B_IN_ENCODER_SIDE_END_SENSOR Input. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PB10 */
-    /* GPIO_B_IN_MOTOR_SIDE_END_SENSOR Input. */
-    be_result = be_board_pin_init( GPIOB, GPIO_Pin_0, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PB0 */
-    /* PE printer Input. */
-    be_result = be_board_pin_init( GPIOC, GPIO_Pin_13, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC13 */
-#endif
     
-#if 0
-    /* AGP Input. */
-    be_result = be_board_pin_init( GPIOC, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC14 */
-#endif
+    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_1, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);   /* PB1 connected to Blue LED on board. This pin has not external board connection. */
+    GPIO_SetBits( GPIOB, GPIO_Pin_1);   /* Turn LED ON.(Just for test.)*/
 
-#if 0
-    /* Head Gear Input. */
-    be_result = be_board_pin_init( GPIOC, GPIO_Pin_15, GPIO_Speed_10MHz,GPIO_Mode_IPU); /* PC15 */
+    /* Outputs GPIO. */
+    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_0,  GPIO_Speed_10MHz,GPIO_Mode_Out_PP);  /* PB0  */  /* Pulse. */
+    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_2,  GPIO_Speed_10MHz,GPIO_Mode_Out_PP);  /* PB2  */  /* Dir. */
+    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_10, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);  /* PB10 */  /* Enable. */
+    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_11, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);  /* PB11 */  /* Encoder A. */
+    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);  /* PB12 */  /* Encoder B. */
+    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_13, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);  /* PC13 */  /* AGP emulation output. */ /* Reset value have to be "1". */
 
-    /* Button 1. Input. */
-    be_result = be_board_pin_init( GPIOA, GPIO_Pin_0, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA0 */
-    /* Button 2. Input. */
-    be_result = be_board_pin_init( GPIOA, GPIO_Pin_1, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA1 */
-    /* Button 3. Input. */
-    be_result = be_board_pin_init( GPIOA, GPIO_Pin_2, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA2 */
-    /* Button 4. Input. */
-    be_result = be_board_pin_init( GPIOA, GPIO_Pin_3, GPIO_Speed_2MHz,GPIO_Mode_IPU); /* PA3 */
-#endif
-    
-    
-#endif
+    GPIO_ResetBits( GPIOB, GPIO_Pin_0 );
+    GPIO_ResetBits( GPIOB, GPIO_Pin_2 );  
+    GPIO_ResetBits( GPIOB, GPIO_Pin_10);    
+    GPIO_ResetBits( GPIOB, GPIO_Pin_11);    
+    GPIO_ResetBits( GPIOB, GPIO_Pin_12);   
+    GPIO_SetBits(   GPIOC, GPIO_Pin_13);    /* Reset value of AGP emmulator have to be "1". */
 
+    /* Inputs GPIO. */
+    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PB14 */  /* ENCODER_SIDE_END_SENSOR Input. */
+    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_15, GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PB15 */  /* MOTOR_SIDE_END_SENSOR Input. */
+    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_1,  GPIO_Speed_2MHz, GPIO_Mode_IPU);     /* PA1  */  /* Button 1. Input. */
+    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_2,  GPIO_Speed_2MHz, GPIO_Mode_IPU);     /* PA2  */  /* Button 2. Input. */
+    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_3,  GPIO_Speed_2MHz, GPIO_Mode_IPU);     /* PA3  */  /* Button 3. Input. */
+    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_4,  GPIO_Speed_2MHz, GPIO_Mode_IPU);     /* PA4  */  /* Button 4. Input. */
+    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_8,  GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PA8  */  /* PE desk Input. */
 
-    /* be_result = be_board_pin_init( GPIOA, GPIO_Pin_12, GPIO_Speed_10MHz,GPIO_Mode_Out_PP); */ /* PA12 */
-    /* GPIO_ResetBits( GPIOA, GPIO_Pin_12); */
-
-
-
-
-
-
+    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PC14 */  /* AGP Input. */
+    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_15, GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PC15 */  /* Head Gear Input. */
+ 
     return(be_result);
 }
 

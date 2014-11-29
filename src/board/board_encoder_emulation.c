@@ -2,7 +2,11 @@
 
 #include "board_encoder_emulation.h"
 
-/**/
+
+static uint16_t u16_target_period = 0U;
+
+
+/* Board encoder emulation init. */
 BOARD_ERROR board_encoder_emulation_init(void)
 {
     BOARD_ERROR be_result = BOARD_ERR_OK;
@@ -10,42 +14,56 @@ BOARD_ERROR board_encoder_emulation_init(void)
     be_result = board_encoder_emulation_timer_init();
 
     /**/
-    board_encoder_emulation_start();
+    /* board_encoder_emulation_start(); */
     /**/
     
     return(be_result);
 }
 
-static void board_encoder_emulation_start(void)
+/* Start encoder emulation timer and interrupt. */
+void board_encoder_emulation_start(void)
 {
+    /* Set start period. */
+    board_encoder_emulation_set_period(ZERO_SPEED_PERIOD);
+
+    /* Enable counter. */
     TIM_Cmd(TIM1, ENABLE);
+    /* Enable update interrupt. */
     NVIC_EnableIRQ(TIM1_UP_IRQn);
 }
 
+/* Stop encoder emulation timer and interrupt. */
 void board_encoder_emulation_stop(void)
 {
     TIM_Cmd(TIM1, DISABLE);
     NVIC_DisableIRQ(TIM1_UP_IRQn);
 }                
-                
+
+/* Set target value of encoder period. */
+void board_encoder_emulation_set_target_period(uint16_t u16_period)
+{
+    u16_target_period = u16_period;
+}
+
+/* Set current timer period. */
 static void board_encoder_emulation_set_period(uint16_t u16_period)
 {
     TIM1->ARR = u16_period;
 }
 
-
-
+/* Timer 1 update interrupt hundler. */
 void TIM1_UP_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM1, TIM_IT_Update) != RESET)
     {
          TIM_ClearITPendingBit(TIM1, TIM_IT_Update);            /* Counter overflow, reset interrupt */
-         board_encoder_emulation_proccess();
-         
+         /* board_encoder_emulation_proccess(); */
+         board_encoder_emulation_float_proccess();
     }
 }
 
-static void board_encoder_emulation_proccess(void)
+/* For test only. */
+static void _test_board_encoder_emulation_proccess(void)
 {
     uint16_t u16_current_period = 0U;
     
@@ -72,24 +90,76 @@ static void board_encoder_emulation_proccess(void)
     {
         u16_current_period--;
     }
+    board_encoder_emulation_set_period(u16_current_period);
+}
+
+/* Integer calculation of PID approaching. */
+static void board_encoder_emulation_proccess(void)
+{
+    uint16_t u16_current_period = 0U;
     
+    int32_t i32_current_period  = 0;
+    int32_t i32_target_period   = 0;
+    int32_t i32_new_period      = 0;
+    
+    
+    u16_current_period = TIM1->ARR;
+
+    i32_current_period = (int32_t)u16_current_period;
+    i32_target_period = (int32_t)u16_target_period;
+    
+    i32_new_period = i32_current_period + ((i32_target_period - i32_current_period)/PID_PROPORTIONAL);
+    
+    u16_current_period = (uint16_t)i32_new_period;
+
+    board_encoder_emulation_set_period(u16_current_period);
+}
+
+/* Float calculation of PID approaching. */
+static void board_encoder_emulation_float_proccess(void)
+{
+    uint16_t u16_current_period = 0U;
+    float f32_current_period  = (float)0;
+    float f32_target_period   = (float)0;
+    float f32_new_period      = (float)0;
+    
+    PWM_CAPTURE_STATE pcs_state;
+ 
+    /* Get current channel of PWM capture. CW or CCW or Stop. */
+    pcs_state = board_capture_get_pwm_command();
+     
+    /* Read current encoder period. */
+    u16_current_period = TIM1->ARR;
+
+    f32_current_period = (float)u16_current_period;
+    f32_target_period  = (float)u16_target_period;
+    
+    /* Calculate new approaching. */
+    f32_new_period = f32_current_period + ((f32_target_period - f32_current_period)/((float)PID_PROPORTIONAL));
+    
+    u16_current_period = (uint16_t)f32_new_period;
+
+    /* Set new period to encoder timer. */
     board_encoder_emulation_set_period(u16_current_period);
     
+    /* Here is a place for generation of encoder signals. */
+    if(pcs_state == PWM_CAPTURE_CW_START)
+    {
+        /* ++ */
     
+    }
+    else if(pcs_state == PWM_CAPTURE_CCW_START)
+    {
+        /* -- */
+    }
+    else
+    {
+
+    }  
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
+/* Initialisation of timer for encoder emulation. */
 static BOARD_ERROR board_encoder_emulation_timer_init(void)
 {
     BOARD_ERROR be_result = BOARD_ERR_OK;
@@ -118,10 +188,4 @@ static BOARD_ERROR board_encoder_emulation_timer_init(void)
     TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE);
     return(be_result);
 }        
-
-
-
-
-
-
 

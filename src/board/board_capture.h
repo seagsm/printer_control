@@ -6,6 +6,7 @@
 #include "stm32f10x_tim.h"
 #include "board_system_type.h"
 #include "board_NVIC.h"
+#include "board_encoder_emulation.h"
 
 
 BOARD_ERROR be_board_capture_pwm_init(void);

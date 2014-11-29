@@ -28,8 +28,6 @@ uint16_t board_capture_pwm_TIM4_duty(void)
     return(board_capture_TIM4_PWM_duty);
 }
 
-
-
 /* Get current state of PWM capture.*/
 PWM_CAPTURE_STATE board_capture_get_pwm_command(void)
 {
@@ -39,8 +37,7 @@ PWM_CAPTURE_STATE board_capture_get_pwm_command(void)
 /* Input parameter are TIM2 or TIM4. */
 void board_capture_pwm_TIM_start(TIM_TypeDef* TIMx)
 {
-    /* Set flad of module to START state. */
-    board_capture_command = PWM_CAPTURE_CW_START;
+    /* Set flag of module to START state. */
     if(TIMx == TIM2)
     {  
         board_capture_command = PWM_CAPTURE_CW_START;
@@ -153,17 +150,24 @@ void test(void)
 
 void TIM2_IRQHandler(void)
 {
+    uint16_t u16_tmp = 0U;
+    
     if(TIM_GetITStatus(TIM2, TIM_IT_CC1) == SET)                /* If compare capture has occured */
     {
         TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
         board_capture_TIM2_PWM_period = TIM_GetCapture1(TIM2);  /* Get timer counts for Period */
         board_capture_TIM2_update = 1U;                         /* Set Flag to update period */
+        
+        /* Set period for encoder timer. */
+        u16_tmp = board_capture_TIM2_PWM_period - board_capture_TIM2_PWM_duty;
+        board_encoder_emulation_set_target_period(u16_tmp);
+        
     }
  
     if(TIM_GetITStatus(TIM2, TIM_IT_CC2) == SET)                /* If compare capture has occured */
     {
         TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
-        board_capture_TIM2_PWM_duty= TIM_GetCapture2(TIM2);
+        board_capture_TIM2_PWM_duty = TIM_GetCapture2(TIM2);
     }
  
     if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
@@ -174,11 +178,17 @@ void TIM2_IRQHandler(void)
 
 void TIM4_IRQHandler(void)
 {
+    uint16_t u16_tmp = 0U;
+    
     if(TIM_GetITStatus(TIM4, TIM_IT_CC1) == SET)                /* If compare capture has occured */
     {
         TIM_ClearITPendingBit(TIM4, TIM_IT_CC1);
         board_capture_TIM4_PWM_period = TIM_GetCapture1(TIM4);  /* Get timer counts for Period */
         board_capture_TIM4_update = 1U;                         /* Set Flag to update period */
+        
+        /* Set period for encoder timer. */
+        u16_tmp = board_capture_TIM4_PWM_period - board_capture_TIM4_PWM_duty;
+        board_encoder_emulation_set_target_period(u16_tmp);
     }
  
     if(TIM_GetITStatus(TIM4, TIM_IT_CC2) == SET)                /* If compare capture has occured */
@@ -296,7 +306,7 @@ static void board_capture_tim4_configuration(void)
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
     RCC_APB1PeriphResetCmd(RCC_APB1Periph_TIM4, DISABLE);
     
-    TIM_TimeBaseStructure.TIM_Prescaler = 3U;           /* Tau = 1/(Fslc / (1 + Prescaler )) = 1 / (72000000 / (1 + 4)) = 69.4nS */
+    TIM_TimeBaseStructure.TIM_Prescaler = 4U;           /* Tau = 1/(Fslc / (1 + Prescaler )) = 1 / (72000000 / (1 + 4)) = 69.4nS */
     TIM_TimeBaseStructure.TIM_Period = 0xFFFFU;
     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;

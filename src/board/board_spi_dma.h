@@ -32,6 +32,7 @@
 #define BOARD_SPI_2_MOSI_PORT   GPIOB
 
 BOARD_ERROR board_spi_1_dma_slave_configuration(void);
+BOARD_ERROR board_spi_1_dma_start(void);
 
 void DMA1_Channel2_IRQHandler(void);
 void DMA1_Channel3_IRQHandler(void);
