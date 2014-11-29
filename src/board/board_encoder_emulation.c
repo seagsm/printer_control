@@ -12,10 +12,6 @@ BOARD_ERROR board_encoder_emulation_init(void)
     BOARD_ERROR be_result = BOARD_ERR_OK;
     
     be_result = board_encoder_emulation_timer_init();
-
-    /**/
-    /* board_encoder_emulation_start(); */
-    /**/
     
     return(be_result);
 }
@@ -146,18 +142,19 @@ static void board_encoder_emulation_float_proccess(void)
     if(pcs_state == PWM_CAPTURE_CW_START)
     {
         /* ++ */
+        board_encoder_emulation_output(1);
     
     }
     else if(pcs_state == PWM_CAPTURE_CCW_START)
     {
         /* -- */
+        board_encoder_emulation_output(-1);
     }
     else
     {
 
     }  
 }
-
 
 /* Initialisation of timer for encoder emulation. */
 static BOARD_ERROR board_encoder_emulation_timer_init(void)
@@ -188,4 +185,59 @@ static BOARD_ERROR board_encoder_emulation_timer_init(void)
     TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE);
     return(be_result);
 }        
+
+
+
+/* Input parametr is 1 or -1 . */
+static void board_encoder_emulation_output(int8_t i8_printer_step)
+{
+    static int8_t i8_encoder_possition_counter = 0;
+    
+    i8_encoder_possition_counter = i8_encoder_possition_counter + i8_printer_step;
+    if(i8_encoder_possition_counter > 3)
+    {
+        i8_encoder_possition_counter = 0;
+    }
+    else if(i8_encoder_possition_counter < 0)
+    {
+        i8_encoder_possition_counter = 3;
+    }  
+    else
+    {
+      
+    }
+    
+    switch (i8_encoder_possition_counter)
+    {
+        case 0: 
+            GPIO_SetBits(   GPIOB, GPIO_B_OUT_ENCODER_A);
+            GPIO_SetBits(   GPIOB, GPIO_B_OUT_ENCODER_B);
+            break;
+        case 1: 
+            GPIO_SetBits(   GPIOB, GPIO_B_OUT_ENCODER_A);
+            GPIO_ResetBits( GPIOB, GPIO_B_OUT_ENCODER_B);
+            break;
+        case 2: 
+            GPIO_ResetBits( GPIOB, GPIO_B_OUT_ENCODER_A);
+            GPIO_ResetBits( GPIOB, GPIO_B_OUT_ENCODER_B);
+            break;
+        case 3: 
+            GPIO_ResetBits( GPIOB, GPIO_B_OUT_ENCODER_A);
+            GPIO_SetBits(   GPIOB, GPIO_B_OUT_ENCODER_B);
+            break;
+        default:
+            break;
+    }
+    /* TODO: Here shoub be called function board_motor_step(direction). */
+    board_motor_step(i8_printer_step);
+
+}
+
+
+
+
+
+
+
+
 

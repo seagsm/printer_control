@@ -46,6 +46,7 @@ void board_capture_pwm_TIM_start(TIM_TypeDef* TIMx)
     {  
         board_capture_command = PWM_CAPTURE_CCW_START;
     }
+    
     /* Clear all interrupt flags. */
     TIM_ClearITPendingBit(TIMx, TIM_IT_CC1 | TIM_IT_CC2 | TIM_IT_Update);
     /* Enable interrupt from block. */
@@ -103,6 +104,7 @@ BOARD_ERROR be_board_capture_pwm_init(void)
 }
 
 
+/* DEBUG */
 void test(void)
 {
     uint32_t u32_count = 0U;
@@ -138,33 +140,29 @@ void test(void)
     }  
 }
 
-
-
-
 /*
     timing is :
     T = reg_l * Tau = reg_l * (1/(Fslc / (1 + Prescaler )))=
     = |If Fslc = 72000000 and Prescaler = 4 | = reg_l * ( 1/(72000000/5) )=
     = reg_l * 1 / 14400000 = reg_l * 69.4(4)nS;
 */
-
 void TIM2_IRQHandler(void)
 {
     uint16_t u16_tmp = 0U;
     
-    if(TIM_GetITStatus(TIM2, TIM_IT_CC1) == SET)                /* If compare capture has occured */
+    if(TIM_GetITStatus(TIM2, TIM_IT_CC1) == SET)                /* If compare capture has occured, read value of PWM PERIOD*/
     {
         TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
         board_capture_TIM2_PWM_period = TIM_GetCapture1(TIM2);  /* Get timer counts for Period */
         board_capture_TIM2_update = 1U;                         /* Set Flag to update period */
         
         /* Set period for encoder timer. */
-        u16_tmp = board_capture_TIM2_PWM_period - board_capture_TIM2_PWM_duty;
-        board_encoder_emulation_set_target_period(u16_tmp);
-        
+        u16_tmp = board_capture_TIM2_PWM_period - board_capture_TIM2_PWM_duty; /* Calculation of reverce value of DUTY. */
+        board_encoder_emulation_set_target_period(u16_tmp);     /* Set reference period for encoder emulation module. */
+                                                                /* CW or CCW flaf will be read by board_capture_get_pwm_command() function. */
     }
  
-    if(TIM_GetITStatus(TIM2, TIM_IT_CC2) == SET)                /* If compare capture has occured */
+    if(TIM_GetITStatus(TIM2, TIM_IT_CC2) == SET)                /* If compare capture has occured, read value of PWM DUTY  */
     {
         TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
         board_capture_TIM2_PWM_duty = TIM_GetCapture2(TIM2);
@@ -187,8 +185,9 @@ void TIM4_IRQHandler(void)
         board_capture_TIM4_update = 1U;                         /* Set Flag to update period */
         
         /* Set period for encoder timer. */
-        u16_tmp = board_capture_TIM4_PWM_period - board_capture_TIM4_PWM_duty;
-        board_encoder_emulation_set_target_period(u16_tmp);
+        u16_tmp = board_capture_TIM4_PWM_period - board_capture_TIM4_PWM_duty; /* Calculation of reverce value of DUTY. */
+        board_encoder_emulation_set_target_period(u16_tmp);     /* Set reference period for encoder emulation module. */
+                                                                /* CW or CCW flaf will be read by board_capture_get_pwm_command() function. */
     }
  
     if(TIM_GetITStatus(TIM4, TIM_IT_CC2) == SET)                /* If compare capture has occured */

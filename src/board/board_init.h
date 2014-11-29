@@ -13,7 +13,7 @@
 #include "board_spi_dma.h"
 #include "board_capture.h"
 #include "board_encoder_emulation.h"
-
+#include "board_motor.h"
 
 
 /* #define BOARD_INIT_TOTAL_STEPS 12U */
