@@ -88,7 +88,7 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
 
     DMA_Cmd(DMA1_Channel3, ENABLE); /*//Enable the DMA1 - Channel5 */
 
-#if 0    
+#if 0
     /* Enable SPI2 */
     SPI_Cmd(SPI1, ENABLE);
 
@@ -97,7 +97,7 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
 
     NVIC_EnableIRQ(DMA1_Channel2_IRQn);
 #endif
-    
+
     return(be_result);
 }
 
@@ -126,11 +126,11 @@ void DMA1_Channel2_IRQHandler(void)
         {
             case 0xBDFFU : /* CW */
             case 0xBFFFU :
-              
+
                 if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
-                {  
+                {
                     /* Start PWM capture from CW channel. */
-                    board_capture_pwm_TIM_start(TIM2);
+                     board_capture_pwm_TIM_start(TIM2);
                     /* Start encoder emulation module. */
                     board_encoder_emulation_start();
                 }
@@ -138,14 +138,14 @@ void DMA1_Channel2_IRQHandler(void)
 
             case 0xBDFBU : /* CCW */
                 if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
-                {  
+                {
                     /* Start PWM capture from CCW channel. */
                     board_capture_pwm_TIM_start(TIM4);
                     /* Start encoder emulation module. */
                     board_encoder_emulation_start();
                 }
                 break;
-            
+
             case 0xBDFDU : /* STOP */
                 /* Stop encoder emulation. */
                 board_encoder_emulation_stop();
