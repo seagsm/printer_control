@@ -18,7 +18,7 @@ BOARD_ERROR be_board_uart_init(void)
     be_result |= be_board_uart_uart1_init();
     be_result |= be_board_r_buff_USART1_init();
     be_result |= be_board_dma1_ch4_init();
-    be_result |= be_board_dma1_ch5_init();
+ /*   be_result |= be_board_dma1_ch5_init(); */
 
     return(be_result);
 }

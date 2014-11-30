@@ -5,6 +5,9 @@
 
 #include "board_capture.h"
 
+uint16_t u16_board_capture_duty_value;
+uint16_t u16_board_capture_period_value;
+
 static PWM_CAPTURE_STATE board_capture_command = PWM_CAPTURE_STOP;
 
 static uint16_t board_capture_TIM2_PWM_duty     = 0U;   /* High Register for T2                         */
@@ -289,6 +292,11 @@ static void board_capture_tim2_configuration(void)
     /*More*/
     TIM_SelectInputTrigger(TIM2,TIM_TS_TI1FP1);
     TIM_SelectSlaveMode(TIM2, TIM_SlaveMode_Reset);
+    
+    /* Initialize DMA to transfer CC1 to board_capture_period_value. */
+    board_capture_dma1_ch5_init();
+    /* Initialize DMA to transfer CC2 to board_capture_duty_value. */
+    board_capture_dma1_ch7_init();
  
     /* TIM2 enable counter */
     /* TIM_Cmd(TIM2, ENABLE); */ /* Should be start by start function. */
@@ -338,5 +346,79 @@ static void board_capture_tim4_configuration(void)
     /* TIM4 enable counter */
     /* TIM_Cmd(TIM4, ENABLE); */ /* Should be start by start function. */
 }
+
+
+/* This function should initialiseTIM2 CH1 DMA CH5. */
+static void board_capture_dma1_ch5_init(void)
+{
+    DMA_InitTypeDef DMA_InitStructure;
+
+    /* DMA module clk ON. */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+
+    /* DMA reset. */
+    DMA_DeInit(DMA1_Channel5);
+
+    /* Fill DMA init structure before initialisation. */
+    DMA_InitStructure.DMA_PeripheralBaseAddr    = (uint32_t)(&TIM2->CCR1);
+    DMA_InitStructure.DMA_MemoryBaseAddr        = (uint32_t)(&u16_board_capture_period_value);
+    DMA_InitStructure.DMA_DIR                   = DMA_DIR_PeripheralSRC;
+    DMA_InitStructure.DMA_BufferSize            = 1U;
+    DMA_InitStructure.DMA_PeripheralInc         = DMA_PeripheralInc_Disable;
+    DMA_InitStructure.DMA_MemoryInc             = DMA_MemoryInc_Disable;
+    DMA_InitStructure.DMA_PeripheralDataSize    = DMA_PeripheralDataSize_HalfWord;
+    DMA_InitStructure.DMA_MemoryDataSize        = DMA_MemoryDataSize_HalfWord;
+    DMA_InitStructure.DMA_Mode                  = DMA_Mode_Circular;
+    DMA_InitStructure.DMA_Priority              = DMA_Priority_Low;
+    DMA_InitStructure.DMA_M2M                   = DMA_M2M_Disable;
+
+    /* Initialisation of DMA UART TX. */
+    DMA_Init(DMA1_Channel5, &DMA_InitStructure);
+
+    /* TIM2 ->  DMA1 CH5 enable. */
+    TIM_DMACmd(TIM2, TIM_DMA_CC1, ENABLE);
+ 
+    /* Start DMA transmitting. */
+    DMA_Cmd(DMA1_Channel5, ENABLE);
+}
+
+/* This function should initialiseTIM2 CH2 DMA CH7. */
+static void board_capture_dma1_ch7_init(void)
+{
+    DMA_InitTypeDef DMA_InitStructure;
+
+    /* DMA module clk ON. */
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+
+    /* DMA reset. */
+    DMA_DeInit(DMA1_Channel7);
+
+    /* Fill DMA init structure before initialisation. */
+    DMA_InitStructure.DMA_PeripheralBaseAddr    = (uint32_t)(&TIM2->CCR2);
+    DMA_InitStructure.DMA_MemoryBaseAddr        = (uint32_t)(&u16_board_capture_duty_value);
+    DMA_InitStructure.DMA_DIR                   = DMA_DIR_PeripheralSRC;
+    DMA_InitStructure.DMA_BufferSize            = 1U;
+    DMA_InitStructure.DMA_PeripheralInc         = DMA_PeripheralInc_Disable;
+    DMA_InitStructure.DMA_MemoryInc             = DMA_MemoryInc_Disable;
+    DMA_InitStructure.DMA_PeripheralDataSize    = DMA_PeripheralDataSize_HalfWord;
+    DMA_InitStructure.DMA_MemoryDataSize        = DMA_MemoryDataSize_HalfWord;
+    DMA_InitStructure.DMA_Mode                  = DMA_Mode_Circular;
+    DMA_InitStructure.DMA_Priority              = DMA_Priority_Low;
+    DMA_InitStructure.DMA_M2M                   = DMA_M2M_Disable;
+
+    /* Initialisation of DMA UART TX. */
+    DMA_Init(DMA1_Channel7, &DMA_InitStructure);
+
+    /* TIM2 ->  DMA1 CH7 enable. */
+    TIM_DMACmd(TIM2, TIM_DMA_CC2, ENABLE);
+ 
+    /* Start DMA transmitting. */
+    DMA_Cmd(DMA1_Channel7, ENABLE);
+}
+
+
+
+
+
 
 

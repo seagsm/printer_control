@@ -9,6 +9,9 @@
 #include "board_encoder_emulation.h"
 
 
+extern uint16_t u16_board_capture_duty_value;
+extern uint16_t u16_board_capture_period_value;
+
 BOARD_ERROR be_board_capture_pwm_init(void);
 
 void board_capture_pwm_TIM_start(TIM_TypeDef* TIMx);
@@ -21,6 +24,8 @@ static void board_capture_nvic_configuration(void);
 static void board_capture_tim_configuration(void);
 static void board_capture_tim2_configuration(void);
 static void board_capture_tim4_configuration(void);
+static void board_capture_dma1_ch5_init(void);
+static void board_capture_dma1_ch7_init(void);
 
 void TIM2_IRQHandler(void);
 void TIM4_IRQHandler(void);

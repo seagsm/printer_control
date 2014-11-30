@@ -128,6 +128,9 @@ static void board_encoder_emulation_float_proccess(void)
     u16_current_period = TIM1->ARR;
 
     f32_current_period = (float)u16_current_period;
+    
+    /*f32_target_period  = (float)u16_target_period; */
+    u16_target_period = u16_board_capture_period_value - u16_board_capture_duty_value;
     f32_target_period  = (float)u16_target_period;
     
     /* Calculate new approaching. */

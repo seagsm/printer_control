@@ -326,7 +326,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -335,7 +335,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CompilerMisraRules98</name>
@@ -1895,153 +1895,9 @@
     <name>src</name>
     <group>
       <name>api</name>
-      <excluded>
-        <configuration>Debug</configuration>
-      </excluded>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_baro.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_baro.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_body_angle_calculation.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_body_angle_calculation.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_cmd.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_cmd.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_common.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_common.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_CRC.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_CRC.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_data_normalising.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_data_normalising.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_data_preprocessing.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_data_preprocessing.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_end_device.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_end_device.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_filters.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_filters.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_flash.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_flash.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_i2c_acquisition.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_i2c_acquisition.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_main_loop.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_main_loop.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_packet_structure.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_pid.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_pid.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_rx_channels.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\api_rx_channels.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\MadgwickAHRS.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\MadgwickAHRS.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\MahonyAHRS.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\api\MahonyAHRS.h</name>
-      </file>
     </group>
     <group>
       <name>board</name>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_acc.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_acc.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_adc.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_adc.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_agp.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_agp.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_baro.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_baro.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_capture.c</name>
       </file>
@@ -2055,64 +1911,10 @@
         <name>$PROJ_DIR$\src\board\board_dma.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\src\board\board_drv_adxl345.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
+        <name>$PROJ_DIR$\src\board\board_encoder_emulation.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\src\board\board_drv_adxl345.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_drv_bmp085.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_drv_bmp085.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_drv_hmc5883.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_drv_hmc5883.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_drv_l3g4200d.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_drv_l3g4200d.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_flash.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_flash.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
+        <name>$PROJ_DIR$\src\board\board_encoder_emulation.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_gpio.c</name>
@@ -2121,82 +1923,22 @@
         <name>$PROJ_DIR$\src\board\board_gpio.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\src\board\board_gyro.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_gyro.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_i2c.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_i2c.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
         <name>$PROJ_DIR$\src\board\board_init.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_init.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\src\board\board_mag.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
+        <name>$PROJ_DIR$\src\board\board_motor.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\src\board\board_mag.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_main_loop.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_main_loop.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
+        <name>$PROJ_DIR$\src\board\board_motor.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_NVIC.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_NVIC.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_pf_encoder.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_pf_encoder.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_ppm.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_ppm.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_pwm.c</name>
@@ -2209,18 +1951,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_r_buff.h</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_spi.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_spi.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_spi_dma.c</name>
@@ -2241,37 +1971,19 @@
         <name>$PROJ_DIR$\src\board\board_sys_tick.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\src\board\board_system_init.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_system_init.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
         <name>$PROJ_DIR$\src\board\board_system_type.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\src\board\board_timer.c</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\src\board\board_timer.h</name>
-        <excluded>
-          <configuration>Debug</configuration>
-        </excluded>
-      </file>
-      <file>
         <name>$PROJ_DIR$\src\board\board_uart.c</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_uart.h</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
       </file>
     </group>
     <group>

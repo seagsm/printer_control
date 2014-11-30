@@ -27,12 +27,10 @@ void board_motor_step(int8_t i8_step)
 
 void TIM3_IRQHandler(void)
 {
-    uint16_t u16_tmp = 0U;
     if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
          TIM_ClearITPendingBit(TIM3, TIM_IT_Update);            /* Counter overflow, reset interrupt */
     }
- 
 }
 
 
