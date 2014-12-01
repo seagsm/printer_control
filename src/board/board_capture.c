@@ -13,14 +13,14 @@ static PWM_CAPTURE_STATE board_capture_command = PWM_CAPTURE_STOP;
 static uint16_t board_capture_TIM2_PWM_duty     = 0U;   /* High Register for T2                         */
 static uint16_t board_capture_TIM2_PWM_period   = 0U;   /* Low Regiser for T2 (For Input Capture)       */
 
-#if TIMER4_CAPTURE 
+#if TIMER4_CAPTURE
 static uint16_t board_capture_TIM4_PWM_duty     = 0U;   /* High Register for T4                         */
 static uint16_t board_capture_TIM4_PWM_period   = 0U;   /* Low Regiser for T4 (For Input Capture)       */
-#endif 
+#endif
 
 static uint8_t board_capture_TIM2_update        = 0U;   /* Flag to update period, set by T2 IRQ         */
 
-#if TIMER4_CAPTURE 
+#if TIMER4_CAPTURE
 static uint8_t board_capture_TIM4_update        = 0U;   /* Flag to update period, set by T4 IRQ         */
 #endif
 
@@ -30,7 +30,7 @@ uint16_t board_capture_pwm_TIM2_duty(void)
     return(board_capture_TIM2_PWM_duty);
 }
 
-#if TIMER4_CAPTURE 
+#if TIMER4_CAPTURE
 /* Get TIM4 captured PWM duty. */
 uint16_t board_capture_pwm_TIM4_duty(void)
 {
@@ -85,14 +85,14 @@ void board_capture_pwm_TIM_stop(TIM_TypeDef* TIMx)
         board_capture_TIM2_PWM_duty   = 0U;
     }
 
-#if TIMER4_CAPTURE     
+#if TIMER4_CAPTURE
     if(TIMx == TIM4)
     {
         board_capture_TIM4_PWM_period = 0U;
         board_capture_TIM4_PWM_duty   = 0U;
     }
 #endif
-    
+
 }
 
 /* Initialisation of capture module. */
@@ -107,20 +107,20 @@ BOARD_ERROR be_board_capture_pwm_init(void)
     board_capture_tim_configuration();  /* Configuretion of capture timers. */
 
     board_capture_pwm_TIM_stop(TIM2);
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
     board_capture_pwm_TIM_stop(TIM4);
-#endif    
+#endif
 /*DEBUG*/
 #if 0
     board_capture_pwm_TIM_start(TIM2);
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
     board_capture_pwm_TIM_start(TIM4);
-#endif    
+#endif
 #endif
 
     /* Disable overload event. */
     TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
     TIM_ITConfig(TIM4, TIM_IT_Update, DISABLE);
 #endif
     return(be_result);
@@ -139,11 +139,13 @@ void test(void)
 
     while(1)
     {
+        gv_board_sys_tick_delay(50U);
+        TIM_Cmd(TIM3, ENABLE);
         if(board_capture_TIM2_update == 1U)
         {
             board_capture_TIM2_update = 0U;
         }
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
         if(board_capture_TIM4_update == 1U)
         {
             board_capture_TIM4_update = 0U;
@@ -201,7 +203,7 @@ void TIM2_IRQHandler(void)
     }
 }
 
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
 void TIM4_IRQHandler(void)
 {
     uint16_t u16_tmp = 0U;
@@ -245,7 +247,7 @@ static void board_capture_nvic_configuration(void)
         NVIC_InitStructure.NVIC_IRQChannelCmd                   = ENABLE;
         NVIC_Init(&NVIC_InitStructure);
 
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
         /* Enable TIM42 IRQ */
         NVIC_InitStructure.NVIC_IRQChannel                      = (unsigned char)TIM4_IRQn;
         NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority    = TIMER4_PERIOD_INTERUPT_PRIORITY_GROUP;
@@ -277,7 +279,7 @@ static void board_capture_gpio_configuration(void)
 static void board_capture_tim_configuration(void)
 {
     board_capture_tim2_configuration();
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
     board_capture_tim4_configuration();
 #endif
 }
@@ -332,7 +334,7 @@ static void board_capture_tim2_configuration(void)
     /* TIM_Cmd(TIM2, ENABLE); */ /* Should be start by start function. */
 }
 
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
 /* Set Timer 4 Interrupt (Input Pulse Capture) */
 static void board_capture_tim4_configuration(void)
 {

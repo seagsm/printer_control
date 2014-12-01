@@ -7,7 +7,7 @@
 #include "board_system_type.h"
 #include "board_NVIC.h"
 #include "board_encoder_emulation.h"
-
+#include "board_sys_tick.h"
 
 #define TIMER4_CAPTURE  0
 
@@ -26,7 +26,7 @@ static void board_capture_nvic_configuration(void);
 static void board_capture_tim_configuration(void);
 static void board_capture_tim2_configuration(void);
 
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
 static void board_capture_tim4_configuration(void);
 #endif
 
@@ -41,7 +41,7 @@ PWM_CAPTURE_STATE board_capture_get_pwm_command(void);
 void board_capture_set_pwm_command(PWM_CAPTURE_STATE command);
 
 uint16_t board_capture_pwm_TIM2_duty(void);
-#if TIMER4_CAPTURE    
+#if TIMER4_CAPTURE
 uint16_t board_capture_pwm_TIM4_duty(void);
 #endif
 
