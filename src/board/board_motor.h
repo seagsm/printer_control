@@ -11,12 +11,14 @@
 
 
        BOARD_ERROR board_motor_init(void);
-static BOARD_ERROR board_motor_timer_init(void);
+static        void board_motor_timer_init(void);
 
               void board_motor_step(int8_t i8_step);
      
               void TIM3_IRQHandler(void);
-
+              
+static        void board_motor_timer_pulse_counter_init(void);              
+              void TIM4_IRQHandler(void);
 
 
 #endif
