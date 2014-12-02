@@ -84,7 +84,7 @@ static void board_motor_timer_init(void)
     TIM_OCInitStructure.TIM_OCMode      = TIM_OCMode_PWM1;
     TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
     TIM_OCInitStructure.TIM_Pulse       = u16_pwm_duty;
-    TIM_OCInitStructure.TIM_OCPolarity  = TIM_OCPolarity_Low;/* TIM_OCPolarity_High; */
+    TIM_OCInitStructure.TIM_OCPolarity  = TIM_OCPolarity_Low;/*TIM_OCPolarity_High ; */
     TIM_OC3Init(TIM3, &TIM_OCInitStructure);
 
     /* Init Timer3 like PWM. */
@@ -93,7 +93,7 @@ static void board_motor_timer_init(void)
     TIM_TimeBaseStructure.TIM_Period        = u16_pwm_period;
     TIM_TimeBaseStructure.TIM_Prescaler     = 1U;         /* Ftimer=Fsys/(Prescaler-1),for Fsys=72MHz and Prescaler=71, Ftimer=1MHz. */
     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-    TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
+    TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up; /* TIM_CounterMode_Down; */
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
 
@@ -145,27 +145,27 @@ static void board_motor_timer_pulse_counter_init(void)
 }
 
 void TIM4_IRQHandler(void)
-{
+{ /* 4.2 uS*/
     if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
-    {
-         TIM_ClearITPendingBit(TIM4, TIM_IT_Update);            /* Counter overflow, reset interrupt */
+        {
+            TIM_ClearITPendingBit(TIM4, TIM_IT_Update);            /* Counter overflow, reset interrupt */
 
-         /*TODO: Here should be decreased encoder step counter and 
-         * should be  disabled a PWM if  encoder step counter reached 0.
-         */
+            /*TODO: Here should be decreased encoder step counter and 
+            * should be  disabled a PWM if  encoder step counter reached 0.
+            */
 
-        if(int32_possition > 0)
-        {                          
-            int32_possition--;
+            if(int32_possition > 0)
+            {                          
+                int32_possition--;
+            }
+            else if(int32_possition < 0)
+            {                          
+                int32_possition++;
+            }    
+            else /* Zero point. Stop moving. */
+            {  
+                TIM_Cmd(TIM3, DISABLE);/**/
+                TIM_SetCounter(TIM3, 0U);
+            }    
         }
-        else if(int32_possition < 0)
-        {                          
-            int32_possition++;
-        }    
-        else /* Zero point. Stop moving. */
-        {  
-            TIM_Cmd(TIM3, DISABLE);/**/
-            TIM_SetCounter(TIM3, 0U);
-        }    
-    }
 }

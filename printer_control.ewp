@@ -1942,9 +1942,15 @@
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_pwm.c</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_pwm.h</name>
+        <excluded>
+          <configuration>Debug</configuration>
+        </excluded>
       </file>
       <file>
         <name>$PROJ_DIR$\src\board\board_r_buff.c</name>

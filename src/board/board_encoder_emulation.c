@@ -58,6 +58,7 @@ void TIM1_UP_IRQHandler(void)
     }
 }
 
+#if 0
 /* For test only. */
 static void _test_board_encoder_emulation_proccess(void)
 {
@@ -88,7 +89,9 @@ static void _test_board_encoder_emulation_proccess(void)
     }
     board_encoder_emulation_set_period(u16_current_period);
 }
+#endif
 
+#if 0
 /* Integer calculation of PID approaching. */
 static void board_encoder_emulation_proccess(void)
 {
@@ -110,6 +113,7 @@ static void board_encoder_emulation_proccess(void)
 
     board_encoder_emulation_set_period(u16_current_period);
 }
+#endif
 
 /* Float calculation of PID approaching. */
 static void board_encoder_emulation_float_proccess(void)

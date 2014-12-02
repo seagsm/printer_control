@@ -14,10 +14,9 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
     NVIC_InitTypeDef    NVIC_InitStructure; /* Variable used to setup the Interrupt */
 
     /* SPI 1 GPIO config. */
-    be_board_pin_init( GPIOA,      GPIO_Pin_7,     GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* MOSI_PIN */
-    be_board_pin_init( GPIOA,      GPIO_Pin_6,     GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* MISO_PIN */ /* Can be used like GPIO. */
-    be_board_pin_init( GPIOA,      GPIO_Pin_5,     GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* SCK_PIN */
-
+    be_board_pin_init( GPIOA,   GPIO_Pin_7, GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* MOSI_PIN */
+    be_board_pin_init( GPIOA,   GPIO_Pin_6, GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* MISO_PIN */ /* Can be used like GPIO. */
+    be_board_pin_init( GPIOA,   GPIO_Pin_5, GPIO_Speed_50MHz,   GPIO_Mode_AF_PP);     /* SCK_PIN */
 
     /*--Enable the SPI1 periph */
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
@@ -27,34 +26,34 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
 
     /* SPI1 configuration */
     SPI_StructInit(&SPI_InitStructure);
-    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
-    SPI_InitStructure.SPI_Mode = SPI_Mode_Slave;
-    SPI_InitStructure.SPI_DataSize = SPI_DataSize_16b;
-    SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;
-    SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
-    SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
-    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
+    SPI_InitStructure.SPI_Direction         = SPI_Direction_2Lines_FullDuplex;
+    SPI_InitStructure.SPI_Mode              = SPI_Mode_Slave;
+    SPI_InitStructure.SPI_DataSize          = SPI_DataSize_16b;
+    SPI_InitStructure.SPI_CPOL              = SPI_CPOL_Low;
+    SPI_InitStructure.SPI_CPHA              = SPI_CPHA_1Edge;
+    SPI_InitStructure.SPI_NSS               = SPI_NSS_Soft;
+    SPI_InitStructure.SPI_FirstBit          = SPI_FirstBit_MSB;
     SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;
-    SPI_InitStructure.SPI_CRCPolynomial = 7U;
+    SPI_InitStructure.SPI_CRCPolynomial     = 7U;
     SPI_Init(SPI1, &SPI_InitStructure);
 
     /* Enable DMA1 channel IRQ Channel */
-    NVIC_InitStructure.NVIC_IRQChannel = (unsigned char)DMA1_Channel2_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = DMA1_Channel2_PRIORITY_GROUP;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = DMA1_Channel2_SUB_PRIORITY_GROUP;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_InitStructure.NVIC_IRQChannel                      = (unsigned char)DMA1_Channel2_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority    = DMA1_Channel2_PRIORITY_GROUP;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority           = DMA1_Channel2_SUB_PRIORITY_GROUP;
+    NVIC_InitStructure.NVIC_IRQChannelCmd                   = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
     /*--Enable DMA1 clock--*/
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 
     /*==Configure DMA1 - Channel2== (SPI -> memory)*/
-    DMA_DeInit(DMA1_Channel2); /*//Set DMA registers to default values */
+    DMA_DeInit(DMA1_Channel2); /* Set DMA registers to default values */
     DMA_StructInit(&DMA_InitStructure);
-    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI1->DR; /*//Address of peripheral the DMA must map to */
-    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&SPIReceivedValue[0]; /*//Variable to which received data will be stored */
+    DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&SPI1->DR; /* Address of peripheral the DMA must map to */
+    DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)&SPIReceivedValue[0]; /* Variable to which received data will be stored */
     DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-    DMA_InitStructure.DMA_BufferSize = 2U; /*//Buffer size */
+    DMA_InitStructure.DMA_BufferSize = 2U; /* Buffer size */
     DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
     DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
     DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
@@ -62,11 +61,11 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
     DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
     DMA_InitStructure.DMA_Priority = DMA_Priority_High;
     DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
-    DMA_Init(DMA1_Channel2, &DMA_InitStructure); /*//Initialise the DMA */
+    DMA_Init(DMA1_Channel2, &DMA_InitStructure); /* Initialise the DMA */
 
     DMA_ITConfig(DMA1_Channel2, DMA_IT_TC, ENABLE);
 
-    DMA_Cmd(DMA1_Channel2, ENABLE); /*//Enable the DMA1 - Channel2 */
+    DMA_Cmd(DMA1_Channel2, ENABLE); /* Enable the DMA1 - Channel2 */
 
     /* Configure DMA1 - Channel3  (memory -> SPI) */
     DMA_DeInit(DMA1_Channel3);                                                  /* Set DMA registers to default values */
@@ -86,17 +85,7 @@ BOARD_ERROR board_spi_1_dma_slave_configuration(void)
 
     DMA_ITConfig(DMA1_Channel3, DMA_IT_TC, ENABLE);
 
-    DMA_Cmd(DMA1_Channel3, ENABLE); /*//Enable the DMA1 - Channel5 */
-
-#if 0
-    /* Enable SPI2 */
-    SPI_Cmd(SPI1, ENABLE);
-
-    /* Enable the SPI1 RX & TX DMA requests */
-    SPI_I2S_DMACmd(SPI1, SPI_I2S_DMAReq_Rx | SPI_I2S_DMAReq_Tx, ENABLE);
-
-    NVIC_EnableIRQ(DMA1_Channel2_IRQn);
-#endif
+    DMA_Cmd(DMA1_Channel3, ENABLE); /* Enable the DMA1 - Channel3 */
 
     return(be_result);
 }
@@ -126,11 +115,10 @@ void DMA1_Channel2_IRQHandler(void)
         {
             case 0xBDFFU : /* CW */
             case 0xBFFFU :
-
                 if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
                 {
                     /* Start PWM capture from CW channel. */
-                     board_capture_pwm_TIM_start(PWM_CAPTURE_CW_START);
+                    board_capture_pwm_TIM_start(PWM_CAPTURE_CW_START);
                     /* Start encoder emulation module. */
                     board_encoder_emulation_start();
                 }
@@ -141,7 +129,7 @@ void DMA1_Channel2_IRQHandler(void)
                 {
                     /* Start PWM capture from CCW channel. */
                     board_capture_pwm_TIM_start(PWM_CAPTURE_CCW_START);
-                    /* Start encoder emulation module. */
+                    /* Start encoder emulation module.     */
                     board_encoder_emulation_start();
                 }
                 break;
