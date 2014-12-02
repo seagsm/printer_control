@@ -115,9 +115,9 @@ static void board_encoder_emulation_proccess(void)
 static void board_encoder_emulation_float_proccess(void)
 {
     uint16_t u16_current_period = 0U;
-    float f32_current_period  = (float)0;
-    float f32_target_period   = (float)0;
-    float f32_new_period      = (float)0;
+    float f32_current_period    = (float)0;
+    float f32_target_period     = (float)0;
+    float f32_new_period        = (float)0;
     
     PWM_CAPTURE_STATE pcs_state;
  
@@ -128,9 +128,17 @@ static void board_encoder_emulation_float_proccess(void)
     u16_current_period = TIM1->ARR;
 
     f32_current_period = (float)u16_current_period;
+ 
+    /* Calculation of first aproximation of DUTY -> ENCODER PERIOD */
+    if(u16_board_capture_duty_value > 0U)
+    {
+        u16_target_period = 3000U/u16_board_capture_duty_value;
+    }
+    else
+    {
+        u16_target_period = 4000U;
+    }  
     
-    /*f32_target_period  = (float)u16_target_period; */
-    u16_target_period = u16_board_capture_period_value - u16_board_capture_duty_value;
     f32_target_period  = (float)u16_target_period;
     
     /* Calculate new approaching. */
@@ -174,7 +182,7 @@ static BOARD_ERROR board_encoder_emulation_timer_init(void)
     NVIC_InitStructure.NVIC_IRQChannelCmd                   = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
-    /* Init Timer1 like PWM. */
+    /* Init Timer1 like timer. */
     RCC_APB2PeriphClockCmd (RCC_APB2Periph_TIM1, ENABLE);
 
     /* Time Base configuration */
@@ -195,7 +203,11 @@ static BOARD_ERROR board_encoder_emulation_timer_init(void)
 static void board_encoder_emulation_output(int8_t i8_printer_step)
 {
     static int8_t i8_encoder_possition_counter = 0;
-    
+
+    /* TODO: Here shoub be called function board_motor_step(direction). */
+    board_motor_step(i8_printer_step);
+
+    /* Round encoder. */    
     i8_encoder_possition_counter = i8_encoder_possition_counter + i8_printer_step;
     if(i8_encoder_possition_counter > 3)
     {
@@ -231,9 +243,6 @@ static void board_encoder_emulation_output(int8_t i8_printer_step)
         default:
             break;
     }
-    /* TODO: Here shoub be called function board_motor_step(direction). */
-    board_motor_step(i8_printer_step);
-
 }
 
 

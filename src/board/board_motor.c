@@ -3,6 +3,7 @@
 
 #include "board_motor.h"
 
+static int32_t int32_possition;
 
 BOARD_ERROR board_motor_init(void)
 {
@@ -10,17 +11,47 @@ BOARD_ERROR board_motor_init(void)
 
     board_motor_timer_init();
     board_motor_timer_pulse_counter_init();
+    board_motor_direction(CW);    
+    board_motor_enable(ENABLE);
 
     return(be_result);
 }
 
 void board_motor_step(int8_t i8_step)
 {
-
-
-
+    int32_possition = int32_possition + i8_step;    /* Add one step to pool. */ 
+    board_motor_direction(int32_possition);         /* Set direction. */
+    TIM_Cmd(TIM3, ENABLE);                          /* Start step by PWM generation. */
 }
 
+/* Set direction in motor driver. */    
+static void board_motor_direction(int32_t int32_direction)
+{
+    /* Direction should be tested. */
+    if(int32_direction >= 0)
+    {  
+        GPIO_SetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);    
+    }
+    else
+    {
+        GPIO_ResetBits(GPIOB, GPIO_B_OUT_MOTOR_DIR);
+    }
+}
+
+/* Enable - disable motor driver. */
+static void board_motor_enable(uint8_t uint8_enable)
+{
+    if(uint8_enable == ENABLE)
+    {
+        GPIO_SetBits(GPIOB, GPIO_B_OUT_MOTOR_ENABLE);
+    }
+    else
+    {
+        GPIO_ResetBits(GPIOB, GPIO_B_OUT_MOTOR_ENABLE);
+    }  
+}
+
+#if 0
 void TIM3_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
@@ -28,37 +59,10 @@ void TIM3_IRQHandler(void)
          TIM_ClearITPendingBit(TIM3, TIM_IT_Update);            /* Counter overflow, reset interrupt */
     }
 }
-
-/* Initialisation of timer 3 for generation of pulses for motor driver. */
-#if 0
-static void board_motor_timer_init(void)
-{
-    NVIC_InitTypeDef   NVIC_InitStructure;
-    TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-
-    /* Enable the TIM1 global Interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel                      = (unsigned char)TIM3_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority    = TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority           = TIMER3_PERIOD_INTERUPT_SUB_PRIORITY_GROUP;
-    NVIC_InitStructure.NVIC_IRQChannelCmd                   = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-
-    /* TIM3 clock enable*/
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
-    RCC_APB1PeriphResetCmd(RCC_APB1Periph_TIM3, DISABLE);
-
-    /* Time Base configuration */
-    TIM_TimeBaseStructure.TIM_Period        = BOARD_MOTOR_STEP_PERIOD;
-    TIM_TimeBaseStructure.TIM_Prescaler     = 71U;          /* Ftimer=fsys/(Prescaler+1),for Prescaler=71 ,Ftimer=1MHz */
-    TIM_TimeBaseStructure.TIM_ClockDivision = 0U;
-    TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
-    TIM_TimeBaseInit(TIM1, &TIM_TimeBaseStructure);
-
-    TIM_ClearITPendingBit(TIM3, TIM_IT_Update);             /* Clear pending interrupt. */
-    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-}
 #endif
 
+
+/* Initialisation of timer 3 for generation of pulses PWM for motor driver. */
 static void board_motor_timer_init(void)
 {
     uint16_t u16_pwm_period = 550U; /* 65000Hz.*/
@@ -121,7 +125,7 @@ static void board_motor_timer_pulse_counter_init(void)
 
     /* Time Base configuration */
     TIM_TimeBaseStructure.TIM_Period        = 8U;
-    TIM_TimeBaseStructure.TIM_Prescaler     = 0U;          /* Ftimer=fsys/(Prescaler+1),for Prescaler=71 ,Ftimer=1MHz */
+    TIM_TimeBaseStructure.TIM_Prescaler     = 0U;       /* Ftimer=fsys/(Prescaler+1),for Prescaler=71 ,Ftimer=1MHz */
     TIM_TimeBaseStructure.TIM_ClockDivision = 0U;
     TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;
     TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
@@ -133,35 +137,35 @@ static void board_motor_timer_pulse_counter_init(void)
     TIM_SelectMasterSlaveMode(TIM4, TIM_MasterSlaveMode_Enable);
     TIM_SelectSlaveMode(TIM4, TIM_SlaveMode_External1);
 
-    TIM_ClearITPendingBit(TIM4, TIM_IT_Update);             /* Clear pending interrupt. */
+    TIM_ClearITPendingBit(TIM4, TIM_IT_Update);         /* Clear pending interrupt. */
     TIM_ITConfig(TIM4, TIM_IT_Update, ENABLE);
 
-    TIM_SetCounter(TIM4, 0U); /* Clear counter. */
-    TIM_Cmd(TIM4, ENABLE);    /* Enable timer. */
+    TIM_SetCounter(TIM4, 0U);                           /* Clear counter. */
+    TIM_Cmd(TIM4, ENABLE);                              /* Enable timer. */
 }
 
 void TIM4_IRQHandler(void)
 {
-#if 0
-    if(TIM_GetITStatus(TIM4, TIM_IT_CC1) == SET)                /* If compare capture has occured */
-    {
-        TIM_ClearITPendingBit(TIM4, TIM_IT_CC1);
-    }
-
-    if(TIM_GetITStatus(TIM4, TIM_IT_CC2) == SET)                /* If compare capture has occured */
-    {
-        TIM_ClearITPendingBit(TIM4, TIM_IT_CC2);
-    }
-#endif
     if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
     {
          TIM_ClearITPendingBit(TIM4, TIM_IT_Update);            /* Counter overflow, reset interrupt */
 
-         /*TODO: Here should be decreased encoder step counter and disabled PWM if
-         * encoder step counter reached 0.
+         /*TODO: Here should be decreased encoder step counter and 
+         * should be  disabled a PWM if  encoder step counter reached 0.
          */
 
-         TIM_Cmd(TIM3, DISABLE);/**/
-         TIM_SetCounter(TIM3, 0U);
+        if(int32_possition > 0)
+        {                          
+            int32_possition--;
+        }
+        else if(int32_possition < 0)
+        {                          
+            int32_possition++;
+        }    
+        else /* Zero point. Stop moving. */
+        {  
+            TIM_Cmd(TIM3, DISABLE);/**/
+            TIM_SetCounter(TIM3, 0U);
+        }    
     }
 }

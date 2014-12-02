@@ -7,6 +7,10 @@
 
 #define _M_PI 3.1415926535
 
+#define CW    1
+#define CCW  -1
+
+
 typedef struct
 {
     uint16_t u16_X;

@@ -28,12 +28,10 @@ BOARD_ERROR be_board_init_main_init(void)
                /* be_result = be_board_uart_init(); */  /* Init UART modules. */
                 break;
             case (2U):
-                /*  be_result = be_board_pwm_init(); */    /* Init PWM chanels. */
-                /* Should be initialized by be_board_motor_init() based on TIM3 */
-                be_result = board_motor_init();  /*            */
+                be_result = board_encoder_emulation_init();
                 break;
             case (3U):
-                be_result = board_encoder_emulation_init();
+                be_result = board_motor_init();  /* Init TIM3 for PWM, TIM4 for PWM counter. */
                 break;
             case (4U):
                 be_result = be_board_capture_pwm_init();

@@ -130,7 +130,7 @@ void DMA1_Channel2_IRQHandler(void)
                 if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
                 {
                     /* Start PWM capture from CW channel. */
-                     board_capture_pwm_TIM_start(TIM2);
+                     board_capture_pwm_TIM_start(PWM_CAPTURE_CW_START);
                     /* Start encoder emulation module. */
                     board_encoder_emulation_start();
                 }
@@ -140,7 +140,7 @@ void DMA1_Channel2_IRQHandler(void)
                 if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
                 {
                     /* Start PWM capture from CCW channel. */
-                    board_capture_pwm_TIM_start(TIM4);
+                    board_capture_pwm_TIM_start(PWM_CAPTURE_CCW_START);
                     /* Start encoder emulation module. */
                     board_encoder_emulation_start();
                 }
@@ -150,9 +150,7 @@ void DMA1_Channel2_IRQHandler(void)
                 /* Stop encoder emulation. */
                 board_encoder_emulation_stop();
                 /* Stop PWM capture of CW. */
-                board_capture_pwm_TIM_stop(TIM2);
-                /* Stop PWM capture of CCW. */
-                board_capture_pwm_TIM_stop(TIM4);
+                board_capture_pwm_TIM_stop();
                 break;
             default:
                 break;
