@@ -13,11 +13,6 @@ static PWM_CAPTURE_STATE board_capture_command = PWM_CAPTURE_STOP;
 static uint16_t board_capture_TIM2_PWM_duty     = 0U;   /* High Register for T2                         */
 static uint16_t board_capture_TIM2_PWM_period   = 0U;   /* Low Regiser for T2 (For Input Capture)       */
 
-#if TIMER4_CAPTURE
-static uint16_t board_capture_TIM4_PWM_duty     = 0U;   /* High Register for T4                         */
-static uint16_t board_capture_TIM4_PWM_period   = 0U;   /* Low Regiser for T4 (For Input Capture)       */
-#endif
-
 static uint8_t board_capture_TIM2_update        = 0U;   /* Flag to update period, set by T2 IRQ         */
 
 /* Get TIM2 captured PWM duty. */
@@ -74,10 +69,6 @@ BOARD_ERROR be_board_capture_pwm_init(void)
     board_capture_tim_configuration();  /* Configuretion of capture timers. */
 
     board_capture_pwm_TIM_stop();
-/*DEBUG*/
-#if 0
-    board_capture_pwm_TIM_start(TIM2);
-#endif
 
     /* Disable overload event. */
     TIM_ITConfig(TIM2, TIM_IT_Update, DISABLE);
@@ -91,13 +82,14 @@ void test(void)
     uint32_t u32_count = 0U;
     uint32_t u32_flag  = 0U;
 
-    /* board_capture_pwm_TIM_start(TIM2); */
-    TIM_Cmd(TIM2, ENABLE);
-    /* board_capture_pwm_TIM_start(TIM4); */
 
+    /* TIM_Cmd(TIM2, ENABLE); */
+
+    board_encoder_emulation_start();
     while(1)
     {
         gv_board_sys_tick_delay(50U);
+#if 0
         TIM_Cmd(TIM3, ENABLE);
         if(board_capture_TIM2_update == 1U)
         {
@@ -118,6 +110,7 @@ void test(void)
             }
             u32_count = 0U;
         }
+#endif
     }
 }
 
@@ -155,21 +148,6 @@ void TIM2_IRQHandler(void)
     }
 }
 
-#if 0
-/* Configuration of IRQ for TIM2 and TIM4. */
-static void board_capture_nvic_configuration(void)
-{
-        NVIC_InitTypeDef NVIC_InitStructure;
-
-       /* Enable TIM2 IRQ */
-        NVIC_InitStructure.NVIC_IRQChannel                      = (unsigned char)TIM2_IRQn;
-        NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority    = TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP;
-        NVIC_InitStructure.NVIC_IRQChannelSubPriority           = TIMER2_PERIOD_INTERUPT_SUB_PRIORITY_GROUP;
-        NVIC_InitStructure.NVIC_IRQChannelCmd                   = ENABLE;
-        NVIC_Init(&NVIC_InitStructure);
-}
-#endif
-
 /* Input capture GPIO initialisation. */
 static void board_capture_gpio_configuration(void)
 {
@@ -182,11 +160,6 @@ static void board_capture_gpio_configuration(void)
     GPIO_InitStructure.GPIO_Mode        = GPIO_Mode_IN_FLOATING;
     GPIO_InitStructure.GPIO_Speed       = GPIO_Speed_50MHz;
     GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-    GPIO_InitStructure.GPIO_Pin         = GPIO_Pin_6;
-    GPIO_InitStructure.GPIO_Mode        = GPIO_Mode_IN_FLOATING;
-    GPIO_InitStructure.GPIO_Speed       = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
 static void board_capture_tim_configuration(void)

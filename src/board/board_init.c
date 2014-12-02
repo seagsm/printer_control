@@ -38,7 +38,8 @@ BOARD_ERROR be_board_init_main_init(void)
                 break;
             case (5U):
                 be_result = board_spi_1_dma_slave_configuration();
-                test();
+
+           /*       test();*/
                 break;
             case (6U):
                 be_result = BOARD_ERR_OK;

@@ -49,29 +49,30 @@
 #define DMA1_Channel5_PRIORITY_GROUP      13U   /* UART1 DMA RX receive end. COM1 */
 #define DMA1_Channel5_SUB_PRIORITY_GROUP  0U
 
-#define DMA1_Channel6_PRIORITY_GROUP      3U    /* I2C1 TX DMA transfer end.       */
+#define DMA1_Channel6_PRIORITY_GROUP      12U    /* I2C1 TX DMA transfer end.       */
 #define DMA1_Channel6_SUB_PRIORITY_GROUP  0U
 
-#define DMA1_Channel7_PRIORITY_GROUP      3U    /* I2C1 RX DMA transfer end.       */
+#define DMA1_Channel7_PRIORITY_GROUP      1U    /* I2C1 RX DMA transfer end.       */
 #define DMA1_Channel7_SUB_PRIORITY_GROUP  0U
 
 
 /* SPI ******************************************/
-#define SPI1_IRQn_PRIORITY_GROUP      3U    /* .       */
+#define SPI1_IRQn_PRIORITY_GROUP      0U    /* .       */
 #define SPI1_IRQn_SUB_PRIORITY_GROUP  0U
 
 #define SPI2_IRQn_PRIORITY_GROUP      3U    /* .       */
 #define SPI2_IRQn_SUB_PRIORITY_GROUP  0U
 
 /*TIMER1 ****************************************/
-#define TIMER1_PERIOD_INTERUPT_PRIORITY_GROUP       1U
+#define TIMER1_PERIOD_INTERUPT_PRIORITY_GROUP       2U
 #define TIMER1_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
+
 /*TIMER2 ****************************************/
-#define TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP       2U
+#define TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP       12U
 #define TIMER2_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 
 /*TIMER3 ****************************************/
-#define TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP       2U
+#define TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP       12U
 #define TIMER3_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 
 /*TIMER4 ****************************************/
