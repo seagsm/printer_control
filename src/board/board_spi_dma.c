@@ -101,14 +101,13 @@ BOARD_ERROR board_spi_1_dma_start(void)
 }
 
 /* This codes found but not used.
-          case 0xBDFDU :
-          case 0xBFFBU :
           case 0xBFFDU :
 */
 void DMA1_Channel2_IRQHandler(void)
 {
     /* Reset DMA transfer complete interrupt.*/
     DMA1->IFCR |= DMA_ISR_TCIF2;
+    
     if( SPIReceivedValue[0] == 0x7063U)
     {
         switch(SPIReceivedValue[1])
@@ -124,7 +123,8 @@ void DMA1_Channel2_IRQHandler(void)
                 }
                 break;
 
-            case 0xBDFBU : /* CCW */
+            case 0xBDFBU :    
+            case 0xBFFBU : /* CCW */
                 if(board_capture_get_pwm_command() == PWM_CAPTURE_STOP)
                 {
                     /* Start PWM capture from CCW channel. */
