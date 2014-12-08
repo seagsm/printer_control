@@ -13,3 +13,8 @@ Debug
 /settings/printer_control.dni
 /Release
 Log
+settings
+/stm32f4_version/print_stm32f4/EWARM/Output
+/stm32f4_version/print_stm32f4/EWARM/print_stm32f4.dep
+/stm32f4_version/print_stm32f4/EWARM/print_stm32f4.ewt
+/printer_control.ewt
